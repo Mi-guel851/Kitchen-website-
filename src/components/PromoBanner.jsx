@@ -1,28 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
-import { Sparkles, Copy, Check, Timer, ArrowRight, Tag } from 'lucide-react';
+import Reveal from './ui/Reveal';
+import { Sparkles, Timer, ArrowRight, Check, Copy } from 'lucide-react';
 
+/**
+ * First-order campaign — a full-bleed brand moment, not a notification.
+ */
 export default function PromoBanner() {
   const { applyCoupon, appliedCoupon } = useCart();
   const [copied, setCopied] = useState(false);
 
-  // Simulated countdown timer for flash deal urgency
-  const [timeLeft, setTimeLeft] = useState({
-    hours: 4,
-    minutes: 27,
-    seconds: 45
-  });
+  // Simulated flash-deal countdown
+  const [timeLeft, setTimeLeft] = useState({ hours: 4, minutes: 27, seconds: 45 });
 
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
-        if (prev.seconds > 0) {
-          return { ...prev, seconds: prev.seconds - 1 };
-        } else if (prev.minutes > 0) {
-          return { ...prev, minutes: 59, seconds: 59 };
-        } else if (prev.hours > 0) {
-          return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        }
+        if (prev.seconds > 0) return { ...prev, seconds: prev.seconds - 1 };
+        if (prev.minutes > 0) return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
+        if (prev.hours > 0) return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
         return { hours: 12, minutes: 0, seconds: 0 };
       });
     }, 1000);
@@ -35,128 +31,150 @@ export default function PromoBanner() {
     setTimeout(() => setCopied(false), 3000);
   };
 
+  const copyCode = async () => {
+    try {
+      await navigator.clipboard.writeText('BIGBURGER20');
+    } catch (e) {
+      /* noop */
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 3000);
+  };
+
   const isApplied = appliedCoupon?.code === 'BIGBURGER20';
+  const pad = (n) => String(n).padStart(2, '0');
 
   return (
-    <section id="offers" className="py-16 sm:py-20 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Main Banner Card with Glassmorphism & High-Contrast Visuals */}
-        <div className="relative rounded-3xl sm:rounded-[36px] overflow-hidden bg-gradient-to-br from-[#1E2333] via-[#141724] to-[#0D0F16] border border-orange-500/20 shadow-2xl p-6 sm:p-10 lg:p-14">
-          
-          {/* Ambient Glows */}
-          <div className="absolute -top-24 -right-24 w-80 h-80 bg-[#FF5A1F]/25 blur-[100px] rounded-full pointer-events-none" />
-          <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-amber-500/20 blur-[100px] rounded-full pointer-events-none" />
+    <section id="offers" className="relative overflow-hidden">
+      <div className="relative border-y border-white/[0.05] bg-gradient-to-b from-ink-900 via-ink-900 to-ink-950">
+        <div className="absolute inset-0 grain opacity-[0.05] pointer-events-none" aria-hidden="true" />
+        <div
+          className="absolute -top-32 right-[-8%] w-[28rem] h-[28rem] rounded-full bg-ember-500/[0.1] blur-[130px] pointer-events-none"
+          aria-hidden="true"
+        />
 
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            
-            {/* Left Content */}
-            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              
-              {/* Pill */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/30 text-amber-400 text-xs font-black uppercase tracking-wider">
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                Special Limited-Time Welcome Offer
-              </div>
-
-              {/* Title */}
-              <div className="space-y-2">
-                <p className="text-xl sm:text-2xl font-bold text-amber-400">
-                  Hungry? We've Got You Covered.
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 lg:py-24">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+            {/* ===== Campaign copy ===== */}
+            <div className="lg:col-span-7">
+              <Reveal>
+                <p className="eyebrow">
+                  <Sparkles className="w-3.5 h-3.5 text-gold-400" />
+                  First Order · Limited Welcome Offer
                 </p>
-                <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight">
-                  Get <span className="text-gradient-orange">20% OFF</span> Your First Order
+                <h2 className="mt-5 font-display font-extrabold tracking-[-0.025em] leading-[0.98] text-cream-50 text-4xl sm:text-5xl md:text-[3.4rem] lg:text-[2.9rem] xl:text-[3.4rem] 2xl:text-[4rem]">
+                  Take <span className="text-gradient-flame">20% off</span>
+                  <br />
+                  your first Big Burger.
                 </h2>
-              </div>
+                <p className="mt-5 max-w-md text-sm sm:text-base text-cream-400 leading-relaxed">
+                  Any signature burger, loaded fries or feast combo — the code
+                  applies instantly at checkout, no app required.
+                </p>
+              </Reveal>
 
-              <p className="text-sm sm:text-base text-slate-300 max-w-lg mx-auto lg:mx-0">
-                Order any of our signature gourmet burgers, loaded cheesy fries, or feast combos today and enjoy an instant 20% discount applied at checkout.
-              </p>
+              {/* Coupon ticket + action */}
+              <Reveal delay={120}>
+                <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                  <button
+                    type="button"
+                    onClick={copyCode}
+                    className="group relative inline-flex items-center gap-4 rounded-2xl border border-dashed border-gold-500/50 bg-ink-950/80 px-5 py-3.5 transition-all duration-200 hover:border-gold-400/80 hover:bg-ink-950"
+                    aria-label="Copy coupon code BIGBURGER20"
+                  >
+                    <span className="text-left">
+                      <span className="block text-[9px] font-black uppercase tracking-[0.24em] text-cream-600">
+                        Use code
+                      </span>
+                      <span className="block font-display text-lg sm:text-xl font-extrabold tracking-[0.14em] text-cream-50">
+                        BIGBURGER20
+                      </span>
+                    </span>
+                    <span className="grid w-8 h-8 place-items-center rounded-lg border border-gold-500/30 bg-gold-500/10 text-gold-300 transition-transform duration-200 group-hover:scale-105">
+                      {copied ? (
+                        <Check className="w-4 h-4 text-emerald-400" strokeWidth={3} />
+                      ) : (
+                        <Copy className="w-4 h-4" />
+                      )}
+                    </span>
+                  </button>
 
-              {/* Countdown Timer */}
-              <div className="flex items-center justify-center lg:justify-start gap-3 pt-1">
-                <div className="flex items-center gap-1.5 text-xs font-bold text-slate-400">
-                  <Timer className="w-4 h-4 text-[#FF5A1F]" />
-                  <span>Offer resets in:</span>
+                  <button
+                    type="button"
+                    onClick={handleClaimOffer}
+                    className={
+                      isApplied
+                        ? 'inline-flex items-center justify-center gap-2.5 rounded-full border border-emerald-400/40 bg-emerald-400/10 px-7 py-3.5 text-sm font-bold text-emerald-300 transition-all duration-200'
+                        : 'btn-primary'
+                    }
+                  >
+                    {isApplied ? (
+                      <>
+                        <Check className="w-4 h-4" strokeWidth={2.6} />
+                        Applied to your order
+                      </>
+                    ) : (
+                      <>
+                        Claim 20% off
+                        <ArrowRight className="w-4 h-4" strokeWidth={2.6} />
+                      </>
+                    )}
+                  </button>
                 </div>
-                <div className="flex items-center gap-1.5 font-mono text-xs sm:text-sm font-bold text-white">
-                  <span className="bg-black/50 px-2 py-1 rounded-lg border border-white/10">
-                    {String(timeLeft.hours).padStart(2, '0')}h
+              </Reveal>
+
+              {/* Countdown */}
+              <Reveal delay={200}>
+                <div className="mt-6 flex items-center gap-3 text-xs text-cream-500">
+                  <span className="inline-flex items-center gap-1.5 font-bold">
+                    <Timer className="w-3.5 h-3.5 text-ember-400" />
+                    Offer resets in
                   </span>
-                  <span>:</span>
-                  <span className="bg-black/50 px-2 py-1 rounded-lg border border-white/10">
-                    {String(timeLeft.minutes).padStart(2, '0')}m
-                  </span>
-                  <span>:</span>
-                  <span className="bg-black/50 px-2 py-1 rounded-lg border border-white/10 text-amber-400">
-                    {String(timeLeft.seconds).padStart(2, '0')}s
+                  <span
+                    className="rounded-md bg-ink-950/80 border border-white/[0.08] px-2.5 py-1 font-mono text-[13px] font-bold text-cream-100 tabular-nums tracking-[0.14em]"
+                    aria-live="off"
+                  >
+                    {pad(timeLeft.hours)}:{pad(timeLeft.minutes)}:
+                    <span className="text-gold-300">{pad(timeLeft.seconds)}</span>
                   </span>
                 </div>
-              </div>
+              </Reveal>
+            </div>
 
-              {/* Promo Code Box & Action */}
-              <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                
-                {/* Code Pill */}
-                <div className="flex items-center gap-3 bg-black/50 border border-white/15 px-4 py-3 rounded-2xl w-full sm:w-auto justify-between">
-                  <div className="flex items-center gap-2">
-                    <Tag className="w-4 h-4 text-amber-400" />
-                    <span className="text-xs text-slate-400">Coupon:</span>
-                    <span className="font-mono font-black text-white tracking-wider text-sm">
-                      BIGBURGER20
+            {/* ===== Campaign imagery ===== */}
+            <div className="lg:col-span-5">
+              <Reveal delay={150} y={34}>
+                <div className="relative mx-auto max-w-sm sm:max-w-md">
+                  <div
+                    className="absolute -inset-6 spotlight blur-xl pointer-events-none"
+                    aria-hidden="true"
+                  />
+                  <div className="relative overflow-hidden rounded-[1.75rem] border border-white/[0.09] shadow-glow-soft">
+                    <img
+                      src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=900&q=80"
+                      alt="Big Burger feast — signature burger with golden fries"
+                      loading="lazy"
+                      className="w-full h-64 sm:h-80 object-cover"
+                    />
+                    <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-[inherit]" />
+                    <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink-950/60 to-transparent" />
+                  </div>
+
+                  {/* Discount stamp */}
+                  <div
+                    className="absolute -top-5 -right-3 sm:-right-6 rotate-6 rounded-2xl border border-ink-950/40 bg-gradient-to-br from-gold-300 to-ember-500 px-5 py-3 text-center shadow-glow-ember"
+                  >
+                    <span className="block font-display text-2xl sm:text-[1.7rem] font-extrabold leading-none text-ink-950">
+                      20%
+                    </span>
+                    <span className="mt-1 block text-[8.5px] font-black uppercase tracking-[0.22em] text-ink-950/80">
+                      First Order
                     </span>
                   </div>
                 </div>
-
-                {/* Claim CTA Button */}
-                <button
-                  onClick={handleClaimOffer}
-                  className={`w-full sm:w-auto px-7 py-3.5 rounded-2xl font-black text-sm flex items-center justify-center gap-2 shadow-xl transition-all duration-200 active:scale-95 ${
-                    isApplied || copied
-                      ? 'bg-emerald-500 text-white shadow-emerald-500/30'
-                      : 'bg-gradient-to-r from-[#FF5A1F] to-[#FF7A00] text-white shadow-orange-500/30 hover:scale-105'
-                  }`}
-                >
-                  {isApplied || copied ? (
-                    <>
-                      <Check className="w-4 h-4" />
-                      <span>Offer Applied to Cart!</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>Claim 20% Offer</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </>
-                  )}
-                </button>
-              </div>
-
+              </Reveal>
             </div>
-
-            {/* Right Food Photo Display */}
-            <div className="lg:col-span-5 relative flex items-center justify-center">
-              <div className="relative w-full max-w-sm sm:max-w-md">
-                
-                {/* Visual Card */}
-                <div className="rounded-3xl overflow-hidden border border-white/15 shadow-2xl bg-black/40 group">
-                  <img
-                    src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80"
-                    alt="Delicious burger promo"
-                    className="w-full h-72 sm:h-80 object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                </div>
-
-                {/* Floating Discount Stamp */}
-                <div className="absolute -bottom-5 -right-3 sm:-right-5 bg-gradient-to-tr from-[#FF5A1F] to-amber-400 text-black p-4 rounded-3xl shadow-2xl font-black text-center border-2 border-black rotate-6 animate-pulse-subtle">
-                  <div className="text-2xl sm:text-3xl leading-none">20%</div>
-                  <div className="text-[10px] uppercase tracking-wider font-extrabold">DISCOUNT</div>
-                </div>
-
-              </div>
-            </div>
-
           </div>
-
         </div>
       </div>
     </section>

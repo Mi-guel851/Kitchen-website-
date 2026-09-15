@@ -2,49 +2,66 @@ import React from 'react';
 import { useCart } from '../context/CartContext';
 import { CheckCircle2, Info, Sparkles, X, AlertCircle } from 'lucide-react';
 
+const STYLES = {
+  success: {
+    icon: <CheckCircle2 className="w-[18px] h-[18px] text-emerald-400 shrink-0" />,
+    accent: 'bg-emerald-400',
+    border: 'border-emerald-400/25',
+  },
+  promo: {
+    icon: <Sparkles className="w-[18px] h-[18px] text-gold-400 shrink-0" />,
+    accent: 'bg-gold-400',
+    border: 'border-gold-400/30',
+  },
+  info: {
+    icon: <Info className="w-[18px] h-[18px] text-cream-300 shrink-0" />,
+    accent: 'bg-cream-300',
+    border: 'border-white/15',
+  },
+  error: {
+    icon: <AlertCircle className="w-[18px] h-[18px] text-rose-400 shrink-0" />,
+    accent: 'bg-rose-500',
+    border: 'border-rose-500/35',
+  },
+};
+
+/**
+ * Toast notifications — top-right, clear type colors, gentle slide-in.
+ */
 export default function ToastContainer() {
   const { toasts, removeToast } = useCart();
 
   if (!toasts || toasts.length === 0) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 max-w-sm w-full pointer-events-none px-4 sm:px-0">
+    <div
+      className="pointer-events-none fixed right-4 top-20 z-[100] flex w-[calc(100%-2rem)] max-w-sm flex-col gap-2.5 sm:right-6"
+      aria-live="polite"
+      aria-atomic="false"
+    >
       {toasts.map((toast) => {
-        let icon = <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />;
-        let borderClass = 'border-emerald-500/30';
-        let bgClass = 'bg-[#121620]/95';
-
-        if (toast.type === 'promo') {
-          icon = <Sparkles className="w-5 h-5 text-amber-400 shrink-0" />;
-          borderClass = 'border-amber-500/40';
-        } else if (toast.type === 'info') {
-          icon = <Info className="w-5 h-5 text-blue-400 shrink-0" />;
-          borderClass = 'border-blue-500/30';
-        } else if (toast.type === 'error') {
-          icon = <AlertCircle className="w-5 h-5 text-rose-400 shrink-0" />;
-          borderClass = 'border-rose-500/40';
-        }
-
+        const s = STYLES[toast.type] || STYLES.success;
         return (
           <div
             key={toast.id}
-            className={`pointer-events-auto flex items-start gap-3 p-4 rounded-2xl ${bgClass} border ${borderClass} shadow-2xl backdrop-blur-xl transition-all duration-300 animate-slide-in`}
+            className={`pointer-events-auto relative flex items-start gap-3 overflow-hidden rounded-xl border ${s.border} bg-ink-800/95 p-3.5 pl-4 shadow-glow-soft backdrop-blur-xl animate-toast-in`}
+            role="status"
           >
-            <div className="mt-0.5">{icon}</div>
-            <div className="flex-1">
+            <span className={`absolute bottom-0 left-0 top-0 w-[3px] ${s.accent}`} aria-hidden="true" />
+            <div className="mt-px">{s.icon}</div>
+            <div className="flex-1 min-w-0">
               {toast.title && (
-                <h4 className="text-sm font-semibold text-white tracking-wide">
+                <h4 className="text-[13px] font-bold tracking-wide text-cream-50">
                   {toast.title}
                 </h4>
               )}
-              <p className="text-xs text-slate-300 mt-0.5 leading-relaxed">
-                {toast.message}
-              </p>
+              <p className="mt-0.5 text-xs leading-relaxed text-cream-400">{toast.message}</p>
             </div>
             <button
+              type="button"
               onClick={() => removeToast(toast.id)}
-              className="text-slate-400 hover:text-white transition-colors p-1"
-              aria-label="Close notification"
+              className="shrink-0 p-1 text-cream-600 transition-colors hover:text-cream-100"
+              aria-label="Dismiss notification"
             >
               <X className="w-4 h-4" />
             </button>

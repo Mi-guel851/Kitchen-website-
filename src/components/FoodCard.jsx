@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { formatPrice } from '../utils/format';
-import { Star, Heart, Plus, Minus, Flame, Eye } from 'lucide-react';
+import { Star, Heart, Plus, Minus, Flame, Eye, Check } from 'lucide-react';
 
+/**
+ * Premium food product card. Flat and refined at rest; rises with deeper
+ * shadow, warmer border and a breathing image on hover.
+ */
 export default function FoodCard({ item, onOpenModal }) {
   const {
     addToCart,
@@ -13,7 +17,6 @@ export default function FoodCard({ item, onOpenModal }) {
     toggleFavorite,
   } = useCart();
 
-  const [isHovered, setIsHovered] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
 
   const favorited = isFavorite(item.id);
@@ -23,185 +26,184 @@ export default function FoodCard({ item, onOpenModal }) {
     e.stopPropagation();
     addToCart(item, 1);
     setJustAdded(true);
-    setTimeout(() => setJustAdded(false), 600);
+    setTimeout(() => setJustAdded(false), 1100);
   };
 
   const handleIncrement = (e) => {
     e.stopPropagation();
-    // Find first cart item with this id to increment
     const target = cartItems.find((i) => i.id === item.id);
-    if (target) {
-      updateQuantity(target.uniqueId, target.quantity + 1);
-    } else {
-      addToCart(item, 1);
-    }
+    if (target) updateQuantity(target.uniqueId, target.quantity + 1);
+    else addToCart(item, 1);
   };
 
   const handleDecrement = (e) => {
     e.stopPropagation();
     const target = cartItems.find((i) => i.id === item.id);
-    if (target) {
-      updateQuantity(target.uniqueId, target.quantity - 1);
-    }
-  };
-
-  const handleFavoriteClick = (e) => {
-    e.stopPropagation();
-    toggleFavorite(item.id);
+    if (target) updateQuantity(target.uniqueId, target.quantity - 1);
   };
 
   return (
-    <div
+    <article
       onClick={() => onOpenModal(item)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="group relative flex flex-col rounded-3xl bg-[#141722]/80 hover:bg-[#1A1E2B]/90 border border-white/10 hover:border-[#FF5A1F]/40 backdrop-blur-xl shadow-lg hover:shadow-card-hover transition-all duration-300 cursor-pointer overflow-hidden transform hover:-translate-y-1.5"
+      className="group relative flex h-full flex-col overflow-hidden rounded-[1.25rem] bg-ink-800 border border-white/[0.06] cursor-pointer transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-ember-500/25 hover:shadow-card-hover"
+      aria-label={item.name}
     >
-      {/* Top Image Container */}
-      <div className="relative w-full h-52 sm:h-56 overflow-hidden bg-black/40">
+      {/* ===== Imagery dominates the card ===== */}
+      <div className="relative w-full h-48 sm:h-52 shrink-0 overflow-hidden">
         <img
           src={item.image}
           alt={item.name}
           loading="lazy"
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.07]"
+        />
+        <div
+          className="absolute inset-0 bg-gradient-to-t from-ink-800 via-ink-800/15 to-transparent"
+          aria-hidden="true"
         />
 
-        {/* Gradient Overlay for Text Contrast */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#141722] via-black/20 to-transparent opacity-80" />
-
-        {/* Badges: Popular / Best Seller / Chef Special */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
-          {item.badge && (
-            <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-black/75 backdrop-blur-md text-amber-300 border border-amber-500/30 shadow-md">
-              {item.badge}
+        {/* Badges */}
+        <div className="absolute top-3 left-3 flex flex-col items-start gap-1.5 z-10">
+          {item.isBestSeller ? (
+            <span className="rounded-full bg-ember-500 px-2.5 py-1 text-[9.5px] font-black uppercase tracking-wider text-ink-950 shadow-md">
+              Best Seller
             </span>
+          ) : (
+            item.badge && (
+              <span className="rounded-full border border-gold-500/35 bg-ink-950/85 backdrop-blur-md px-2.5 py-1 text-[9.5px] font-black uppercase tracking-wider text-gold-300">
+                {item.badge}
+              </span>
+            )
           )}
           {item.isSpicy && (
-            <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-rose-500/90 text-white backdrop-blur-md flex items-center gap-1 w-max shadow-sm">
+            <span className="inline-flex items-center gap-1 rounded-full bg-rose-600/95 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-white">
               <Flame className="w-2.5 h-2.5 fill-white" /> Spicy
             </span>
           )}
         </div>
 
-        {/* Favorite Heart Button */}
+        {/* Favorite */}
         <button
-          onClick={handleFavoriteClick}
-          aria-label="Save to favorites"
-          className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/15 flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-90"
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleFavorite(item.id);
+          }}
+          className="absolute top-3 right-3 z-10 grid w-9 h-9 place-items-center rounded-full bg-ink-950/60 backdrop-blur-md border border-white/[0.12] text-cream-200 transition-all duration-200 hover:scale-110 active:scale-90 hover:border-rose-400/40"
+          aria-label={favorited ? 'Remove from favorites' : 'Save to favorites'}
         >
           <Heart
             className={`w-4 h-4 transition-all duration-300 ${
-              favorited
-                ? 'fill-rose-500 text-rose-500 scale-110'
-                : 'text-white/80 hover:text-white'
+              favorited ? 'fill-rose-500 text-rose-500 scale-110' : ''
             }`}
           />
         </button>
 
-        {/* Quick View / Details pill on hover */}
-        <div
-          className={`absolute bottom-3 left-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/10 text-[11px] font-semibold text-slate-200 transition-opacity duration-200 ${
-            isHovered ? 'opacity-100' : 'opacity-0'
-          }`}
+        {/* Quick view affordance (pointer devices only) */}
+        <span
+          className="pointer-events-none absolute bottom-3 left-3 z-10 hidden md:inline-flex items-center gap-1.5 rounded-full bg-ink-950/80 backdrop-blur-md border border-white/[0.1] px-2.5 py-1 text-[10.5px] font-bold text-cream-200 opacity-0 translate-y-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0"
+          aria-hidden="true"
         >
-          <Eye className="w-3 h-3 text-[#FF5A1F]" />
-          <span>Customize</span>
-        </div>
+          <Eye className="w-3 h-3 text-ember-400" />
+          Customize
+        </span>
 
-        {/* Prep Time & Calorie tag */}
+        {/* Prep time */}
         {item.prepTime && (
-          <div className="absolute bottom-3 right-3 z-10 text-[10px] text-slate-300 font-medium px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md border border-white/5">
+          <span className="absolute bottom-3 right-3 z-10 rounded-md bg-ink-950/75 backdrop-blur-md border border-white/[0.07] px-2 py-0.5 text-[10px] font-semibold text-cream-400">
             {item.prepTime}
-          </div>
+          </span>
         )}
       </div>
 
-      {/* Card Content */}
-      <div className="flex flex-col flex-1 p-5 justify-between gap-4">
-        
-        {/* Title, Rating & Description */}
-        <div className="space-y-2">
-          
-          {/* Rating */}
-          <div className="flex items-center justify-between text-xs">
-            <div className="flex items-center gap-1 text-amber-400 font-black">
-              <Star className="w-3.5 h-3.5 fill-amber-400" />
-              <span>{item.rating.toFixed(1)}</span>
-              <span className="text-slate-400 font-medium text-[11px]">
+      {/* ===== Details ===== */}
+      <div className="flex flex-1 flex-col justify-between gap-3.5 p-4 sm:p-5">
+        <div>
+          <div className="flex items-center justify-between text-[11px]">
+            <span className="flex items-center gap-1 font-black text-gold-300">
+              <Star className="w-3 h-3 fill-gold-400 text-gold-400" />
+              {item.rating.toFixed(1)}
+              <span className="text-cream-600 font-semibold">
                 ({item.reviewsCount})
               </span>
-            </div>
+            </span>
             {item.calories && (
-              <span className="text-[11px] text-slate-400 font-medium">
-                {item.calories}
-              </span>
+              <span className="text-cream-600 font-medium">{item.calories}</span>
             )}
           </div>
 
-          {/* Item Name */}
-          <h3 className="font-bold text-base sm:text-lg text-white group-hover:text-[#FF7A00] transition-colors line-clamp-1">
+          <h3 className="mt-1.5 font-display text-[15px] sm:text-base font-bold tracking-tight text-cream-50 line-clamp-1 transition-colors duration-300 group-hover:text-gold-200">
             {item.name}
           </h3>
 
-          {/* Description */}
-          <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed font-normal">
+          <p className="mt-1 text-xs sm:text-[12.5px] text-cream-500 leading-relaxed line-clamp-2">
             {item.description}
           </p>
         </div>
 
-        {/* Price & Action Section */}
-        <div className="pt-3 border-t border-white/5 flex items-center justify-between gap-3">
-          
-          {/* Price */}
-          <div className="flex flex-col">
-            <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400">
-              Price
+        {/* Price + action */}
+        <div className="flex items-end justify-between gap-3 border-t border-white/[0.06] pt-3.5">
+          <div>
+            <span className="block text-[9px] font-black uppercase tracking-[0.2em] text-cream-600">
+              From
             </span>
-            <span className="text-lg font-black text-white group-hover:text-amber-400 transition-colors">
+            <span className="font-display text-lg sm:text-xl font-extrabold tracking-tight text-gold-300">
               {formatPrice(item.price)}
             </span>
           </div>
 
-          {/* Action: Quick Add or In-Cart Counter */}
-          <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+          <div className="flex items-center" onClick={(e) => e.stopPropagation()}>
             {cartCount > 0 ? (
-              <div className="flex items-center bg-[#212635] rounded-xl border border-white/15 p-1 shadow-inner">
+              <div className="flex items-center gap-0.5 rounded-full bg-ink-750 border border-white/[0.1] p-1">
                 <button
+                  type="button"
                   onClick={handleDecrement}
-                  aria-label="Decrease quantity"
-                  className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors active:scale-95"
+                  aria-label={`Decrease ${item.name} quantity`}
+                  className="grid w-7 h-7 place-items-center rounded-full bg-white/[0.06] hover:bg-white/[0.14] text-cream-100 transition-colors active:scale-90"
                 >
-                  <Minus className="w-3.5 h-3.5" />
+                  <Minus className="w-3.5 h-3.5" strokeWidth={2.6} />
                 </button>
-                <span className="w-8 text-center text-xs font-black text-white">
+                <span
+                  key={cartCount}
+                  className="w-7 text-center text-xs font-black text-cream-50 animate-pop"
+                >
                   {cartCount}
                 </span>
                 <button
+                  type="button"
                   onClick={handleIncrement}
-                  aria-label="Increase quantity"
-                  className="w-7 h-7 rounded-lg bg-[#FF5A1F] hover:bg-[#E84A12] text-white flex items-center justify-center transition-colors active:scale-95 shadow-sm"
+                  aria-label={`Increase ${item.name} quantity`}
+                  className="grid w-7 h-7 place-items-center rounded-full bg-ember-500 hover:bg-ember-400 text-ink-950 transition-colors active:scale-90 shadow-md shadow-ember-500/30"
                 >
-                  <Plus className="w-3.5 h-3.5" />
+                  <Plus className="w-3.5 h-3.5" strokeWidth={2.6} />
                 </button>
               </div>
             ) : (
               <button
+                type="button"
                 onClick={handleQuickAdd}
-                className={`relative px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-1.5 shadow-md transition-all duration-200 active:scale-95 ${
+                className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-xs font-bold transition-all duration-200 active:scale-90 ${
                   justAdded
-                    ? 'bg-emerald-500 text-white shadow-emerald-500/30 scale-105'
-                    : 'bg-white/10 hover:bg-[#FF5A1F] text-white hover:shadow-orange-500/25 border border-white/10 hover:border-orange-500'
+                    ? 'bg-emerald-500 text-ink-950 shadow-lg shadow-emerald-500/30'
+                    : 'bg-white/[0.06] border border-white/[0.1] text-cream-50 hover:bg-ember-500 hover:border-ember-500 hover:shadow-glow-ember'
                 }`}
+                aria-label={`Add ${item.name} to cart`}
               >
-                <Plus className="w-3.5 h-3.5" />
-                <span>{justAdded ? 'Added!' : 'Add'}</span>
+                {justAdded ? (
+                  <>
+                    <Check className="w-3.5 h-3.5" strokeWidth={3} />
+                    Added
+                  </>
+                ) : (
+                  <>
+                    <Plus className="w-3.5 h-3.5" strokeWidth={2.6} />
+                    Add
+                  </>
+                )}
               </button>
             )}
           </div>
-
         </div>
-
       </div>
-    </div>
+    </article>
   );
 }

@@ -1,51 +1,61 @@
 import React from 'react';
 import { Flame, Sparkles, Truck, HeartHandshake } from 'lucide-react';
+import Reveal from './ui/Reveal';
 
+const FEATURES = [
+  {
+    icon: Flame,
+    title: 'Smashed at 450°F',
+    subtitle: 'Crispy caramelized crusts, every time',
+  },
+  {
+    icon: Sparkles,
+    title: 'Buttery Brioche Buns',
+    subtitle: 'Baked fresh every single morning',
+  },
+  {
+    icon: Truck,
+    title: '28-Min Heat-Lock Delivery',
+    subtitle: 'Arrives sizzling hot at your door',
+  },
+  {
+    icon: HeartHandshake,
+    title: 'Secret House Sauces',
+    subtitle: 'Crafted in-house, daily',
+  },
+];
+
+/**
+ * Quiet spec-sheet strip under the hero — one line of craft promises.
+ */
 export default function QuickStats() {
-  const features = [
-    {
-      icon: <Flame className="w-5 h-5 text-[#FF5A1F]" />,
-      title: 'Smashed At 450°F',
-      subtitle: 'Crispy caramelized crusts every time'
-    },
-    {
-      icon: <Sparkles className="w-5 h-5 text-amber-400" />,
-      title: 'Potato Brioche Buns',
-      subtitle: 'Freshly baked every single morning'
-    },
-    {
-      icon: <Truck className="w-5 h-5 text-emerald-400" />,
-      title: '28-Min Heat-Lock Delivery',
-      subtitle: 'Arrives sizzling hot at your door'
-    },
-    {
-      icon: <HeartHandshake className="w-5 h-5 text-rose-400" />,
-      title: 'Secret House Sauces',
-      subtitle: 'Crafted in-house daily with love'
-    }
-  ];
-
   return (
-    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4 mb-16">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 rounded-3xl bg-[#13161F]/80 backdrop-blur-xl border border-white/10 shadow-2xl">
-        {features.map((f, i) => (
-          <div
-            key={i}
-            className="flex items-center gap-3.5 p-3.5 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/5 transition-all duration-300 group"
-          >
-            <div className="w-11 h-11 rounded-xl bg-white/5 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-              {f.icon}
-            </div>
-            <div>
-              <h4 className="text-xs font-bold text-white tracking-wide uppercase">
-                {f.title}
-              </h4>
-              <p className="text-[11px] text-slate-400 mt-0.5 leading-snug">
-                {f.subtitle}
-              </p>
-            </div>
+    <div className="relative z-10 border-b border-white/[0.05] bg-ink-900/50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Reveal>
+          <div className="grid grid-cols-2 lg:grid-cols-4">
+            {FEATURES.map((f, i) => (
+              <div
+                key={i}
+                className={`group flex items-center gap-3.5 py-5 lg:py-6 px-4 sm:px-6 border-white/[0.05] border-b lg:border-b-0 even:border-l lg:border-l lg:first:border-l-0 [&:nth-child(n+3)]:border-t lg:[&:nth-child(n+3)]:border-t-0 ${
+                  i === 0 ? 'pl-0' : ''
+                }`}
+              >
+                <span className="grid w-10 h-10 shrink-0 place-items-center rounded-xl bg-white/[0.04] border border-white/[0.07] text-ember-400 transition-transform duration-300 group-hover:scale-105">
+                  <f.icon className="w-[18px] h-[18px]" />
+                </span>
+                <span>
+                  <span className="block text-xs font-bold tracking-wide text-cream-100 uppercase">
+                    {f.title}
+                  </span>
+                  <span className="block text-[11px] text-cream-500 mt-1 leading-snug">
+                    {f.subtitle}
+                  </span>
+                </span>
+              </div>
+            ))}
           </div>
-        ))}
+        </Reveal>
       </div>
     </div>
   );

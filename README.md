@@ -1,48 +1,79 @@
-# Big Burger — Premium Restaurant Ordering Website
+# Big Burger — Premium Restaurant Ordering Experience
 
-An artisan food ordering platform built for **Big Burger**, featuring a modern, app-like restaurant ordering experience.
+A cinematic, high-end food ordering platform for **Big Burger** — built to feel like a
+premium food brand's flagship digital presence: dark, warm, and conversion-focused.
 
-## ✨ Features
+> “Cinematic burger commercial + premium e-commerce + modern luxury interface.”
 
-- **Distinctive Visual Identity & Glassmorphism**:
-  - Dark charcoal and warm obsidian theme (`#08090C`, `#141724`) accented with fiery burger orange (`#FF5A1F`) and golden tones (`#F59E0B`).
-  - Subtle backdrop blur (`backdrop-blur-xl`), soft borders, and smooth hover micro-interactions.
-- **Cinematic Hero Section**:
-  - Wordmark branding with flame emblem.
-  - Headline: *"Big Flavor. Bigger Cravings."*
-  - Interactive floating cards with trust badges (100% Prime Angus, 4.9★ from 2,500+ foodies, 28-min avg delivery).
-- **Interactive Menu with 8 Categories**:
-  - 🍔 Burgers, 🍗 Chicken, 🍕 Pizza, 🍟 Sides, 🌮 Snacks, 🥤 Drinks, 🍰 Desserts, ⭐ Combos.
-  - Real-time search by food name, description, or ingredients.
-  - Dietary pills: All, Popular ⭐, Spicy 🔥, Vegetarian 🌿.
-  - Live category item counts and smooth category tab switching without page reload.
-- **Product Customization Modal**:
-  - Click any food item to customize extras (Extra Cheddar Cheese, Angus Beef Patty, Signature Sauce, Beef Bacon, Fries, Jalapeños).
-  - Special instructions note.
-  - Live dynamic subtotal calculation.
-- **Slide-out Cart Drawer & Floating Bag Pill**:
-  - Floating cart pill (`🛒 3 items — ₦12,500`) with quick drawer toggle.
-  - Delivery vs Pickup toggle with free delivery progress bar (Free delivery over ₦15,000).
-  - Promo code engine (`BIGBURGER20` for 20% off).
-- **Full Checkout Flow**:
-  - Full name, phone, delivery address, nearest landmark, and driver notes.
-  - Payment method UI (Pay on Delivery or Online Payment with card / Apple Pay / bank transfer).
-  - Confetti celebration upon order placement.
-- **Simulated Live Order Tracking**:
-  - 4-stage live stepper (Confirmed ➔ In Kitchen ➔ Out for Delivery ➔ Delivered).
-  - Real-time countdown timer.
-  - Courier profile with direct call action.
-  - Digital receipt breakdown.
-- **Customer Reviews & Community**:
-  - Authentic customer reviews with star ratings, food ordered, and verified badges.
-  - Interactive "Leave a Review" modal with star rating picker.
-- **Favorites / Wishlist**:
-  - Save favorite meals with persistent localStorage storage and 1-click cart addition.
+## 🎨 Design System
+
+### Color — warm fire on near-black
+| Token | Hex | Role |
+| --- | --- | --- |
+| `ink-950 … 600` | `#0A0807 → #2F261D` | Warm near-black backgrounds & charcoal surfaces |
+| `ember-200 … 700` | `#FF5A1F` core | Brand flame — CTAs, active states, highlights (used strategically) |
+| `gold-200 … 600` | `#FFC14D` core | Warm amber/gold — price emphasis, eyebrows, accents |
+| `cream-50 … 700` | `#FAF6EF → #5F594F` | Warm off-white typography scale |
+| `emerald` | `#4ADE80` | Restrained — status only (verified, free delivery, live orders) |
+
+### Typography
+- **Sora** — display face. Tight tracking (`-0.02 / -0.03em`), leading ≈ 0.95. Editorial headlines.
+- **Plus Jakarta Sans** — body/UI. High readability on dark surfaces.
+
+### Motion
+Real, purposeful motion (defined in `tailwind.config.js` + `src/hooks/useMotion.js`):
+- Scroll reveals (`Reveal` component, IntersectionObserver)
+- Eased count-up stats, marquee brand ticker, hero pointer-parallax
+- Card elevation on hover (lift + deeper shadow + image breathe)
+- Add-to-cart feedback (button state, cart-count pop, toasts)
+- Modal scale-in / drawer slide-in / toast slide-in
+- **`prefers-reduced-motion` fully respected** (global CSS kill-switch + JS hook checks)
+
+### Depth (“3D” language)
+Layered surfaces, 1px borders, inner highlights, warm radial spotlights behind food,
+floating badges with parallax, film-grain overlays — depth without gimmicks.
+
+## ✨ Features (all ordering functionality preserved)
+
+- **Cinematic hero** — editorial headline, generated commercial-grade burger visual,
+  floating proof badges (Angus guarantee, 4.9★ social proof, heat chip), trust metrics
+- **Brand ticker + craft spec strip** under the hero
+- **Customer Favorites** — hero “plate” card + 4 premium cards
+- **Artisan menu** — 8 categories (typographic pill rail, **sticky** while scrolling),
+  search by name/description/ingredient, feature filters (Popular / Spicy / Vegetarian),
+  live counts, refined empty state
+- **Product cards** — image-dominant, badges, favorite heart, quick “Customize” affordance,
+  price hierarchy, Add ↔ in-cart quantity stepper
+- **Product detail modal** — clear split: product info (ingredients) vs numbered order
+  configuration (01 Customize extras → 02 Instructions → sticky qty + Add-to-Cart bar)
+- **Cart drawer** — delivery/pickup toggle, free-delivery progress (₦15,000), coupon
+  engine (`BIGBURGER20`, `FEAST10`, `FREEFRIES`), full breakdown, bold total + checkout CTA
+- **Checkout** — numbered sections (method → details → delivery → payment), persistent
+  order summary, Pay-on-Delivery or online card UI, confetti confirmation
+- **Live order tracking** — 4-stage stepper, countdown ETA, courier card + call, receipt
+- **Reviews** — featured card spans two columns, snap horizontal scroll on mobile,
+  verified badges, aggregate 4.9 rating block, leave-a-review modal
+- **“The Standard”** — luxury brand-campaign section: numbered quality pillars,
+  cinematic grill imagery with pull-quote, craft cards, animated stat counters
+- **First-order campaign** — full-bleed promo with copy-to-clipboard coupon ticket,
+  live countdown, one-tap claim (applies the 20% coupon)
+- **Floating cart pill + active-order pill**
+- **Favorites drawer**, toasts (top-right), newsletter → 20% off
+- **Persistence** — cart, favorites and active order survive refresh (localStorage)
+
+## ♿ Accessibility
+Semantic landmarks, labeled buttons/inputs, `aria-pressed`/`aria-modal`/`aria-live`,
+visible `:focus-visible` rings, keyboard `Escape` closes overlays, skip-to-menu link,
+body scroll-lock on overlays, reduced-motion support, alt text on imagery.
 
 ## 🛠 Tech Stack
+React 18 · Vite 5 · Tailwind CSS 3 · Lucide React · Canvas Confetti
+No router needed — single-page scroll architecture preserved; `CartContext` remains the
+single source of truth for cart/favorites/orders.
 
-- **React 18**
-- **Vite**
-- **Tailwind CSS**
-- **Lucide React Icons**
-- **Canvas Confetti**
+## Run
+```bash
+npm install
+npm run dev      # http://localhost:5173
+npm run build    # production bundle (~200 KB gzipped total)
+```

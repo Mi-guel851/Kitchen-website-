@@ -548,8 +548,27 @@ export const WHY_US_ITEMS = [
 ];
 
 export const STATS = [
-  { value: '50,000+', label: 'Burgers Served' },
-  { value: '4.9 ★', label: 'Customer Rating (3k+ Reviews)' },
-  { value: '28 min', label: 'Average Delivery Time' },
-  { value: '100%', label: 'Sizzling Hot Guarantee' },
+  { target: 50000, suffix: '+', label: 'Burgers Served' },
+  { target: 4.9, decimals: 1, label: 'Customer Rating', sub: '3,000+ verified reviews' },
+  { target: 28, suffix: ' min', label: 'Average Delivery Time' },
+  { target: 100, suffix: '%', label: 'Sizzling Hot Guarantee' },
+];
+
+export const QUALITY_PILLARS = [
+  {
+    title: '100% Prime Angus',
+    sub: 'Certified halal, single-origin beef. Never blended, never diluted.',
+  },
+  {
+    title: 'Never Frozen',
+    sub: 'Beef arrives daily from the farm. If it can’t be same-day, it doesn’t hit the grill.',
+  },
+  {
+    title: 'Hand-Smashed Daily',
+    sub: 'Cracked flat on 450°F seasoned cast iron for a crispy, caramelized crust.',
+  },
+  {
+    title: 'Fresh To Order',
+    sub: 'Nothing pre-cooked, nothing under a heat lamp. Your timer starts when you order.',
+  },
 ];
