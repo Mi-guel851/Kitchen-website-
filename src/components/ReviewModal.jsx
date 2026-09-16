@@ -38,26 +38,26 @@ export default function ReviewModal({ isOpen, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink-950/85 backdrop-blur-md animate-fade-in overflow-y-auto"
+      className="fixed inset-0 z-50 flex animate-fade-in items-center justify-center overflow-y-auto bg-cocoa-950/55 p-4 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
       aria-label="Leave a review"
     >
       <div
-        className="relative my-4 w-full max-w-lg space-y-6 rounded-[1.5rem] border border-white/[0.09] bg-ink-850 p-6 shadow-glow-soft animate-scale-in sm:p-8"
+        className="relative my-4 w-full max-w-lg space-y-6 rounded-4xl border border-cream-300 bg-cream-50 p-6 shadow-overlay animate-scale-in sm:p-8"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="grid w-10 h-10 place-items-center rounded-xl border border-gold-500/25 bg-gold-500/10 text-gold-400">
-              <Sparkles className="w-5 h-5" />
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-caramel-100 text-caramel-600">
+              <Sparkles className="h-5 w-5" />
             </span>
             <div>
-              <h3 className="font-display text-lg font-extrabold tracking-tight text-cream-50">
+              <h3 className="font-display text-lg font-extrabold tracking-tight text-cocoa-900">
                 Share your experience
               </h3>
-              <p className="text-[11px] text-cream-500">
+              <p className="text-[11px] text-cocoa-500">
                 Tell us how your Big Burger tasted
               </p>
             </div>
@@ -66,10 +66,10 @@ export default function ReviewModal({ isOpen, onClose }) {
             type="button"
             onClick={onClose}
             autoFocus
-            className="grid w-9 h-9 place-items-center rounded-xl border border-white/[0.08] bg-white/[0.03] text-cream-400 transition-colors hover:text-cream-50 hover:bg-white/[0.08]"
+            className="btn-icon"
             aria-label="Close review form"
           >
-            <X className="w-4 h-4" />
+            <X className="h-4 w-4" />
           </button>
         </div>
 
@@ -91,15 +91,15 @@ export default function ReviewModal({ isOpen, onClose }) {
                   className="p-1 transition-transform duration-150 hover:scale-125 active:scale-95"
                 >
                   <Star
-                    className={`w-7 h-7 transition-colors ${
+                    className={`h-7 w-7 transition-colors ${
                       star <= (hoverRating || rating)
-                        ? 'fill-gold-400 text-gold-400'
-                        : 'text-cream-700'
+                        ? 'fill-caramel-400 text-caramel-400'
+                        : 'text-cream-400'
                     }`}
                   />
                 </button>
               ))}
-              <span className="ml-2 text-xs font-bold text-gold-300">
+              <span className="ml-2 text-xs font-bold text-caramel-600">
                 {hoverRating || rating}/5
               </span>
             </div>
@@ -115,7 +115,7 @@ export default function ReviewModal({ isOpen, onClose }) {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Michael Adeyemi"
-              className="w-full rounded-xl border border-white/[0.08] bg-ink-950/60 px-4 py-3 text-sm text-cream-50 placeholder-cream-600 transition-all duration-200 focus:outline-none focus:border-ember-500/70 focus:ring-2 focus:ring-ember-500/20"
+              className="input-light"
             />
           </div>
 
@@ -128,7 +128,7 @@ export default function ReviewModal({ isOpen, onClose }) {
               value={meal}
               onChange={(e) => setMeal(e.target.value)}
               placeholder="e.g. Big Classic Burger & Truffle Fries"
-              className="w-full rounded-xl border border-white/[0.08] bg-ink-950/60 px-4 py-3 text-sm text-cream-50 placeholder-cream-600 transition-all duration-200 focus:outline-none focus:border-ember-500/70 focus:ring-2 focus:ring-ember-500/20"
+              className="input-light"
             />
           </div>
 
@@ -142,7 +142,7 @@ export default function ReviewModal({ isOpen, onClose }) {
               value={review}
               onChange={(e) => setReview(e.target.value)}
               placeholder="Juicy? Crispy? Sizzling hot? Describe the meal…"
-              className="w-full resize-none rounded-xl border border-white/[0.08] bg-ink-950/60 px-4 py-3 text-sm text-cream-50 placeholder-cream-600 transition-all duration-200 focus:outline-none focus:border-ember-500/70 focus:ring-2 focus:ring-ember-500/20"
+              className="input-light resize-none"
             />
           </div>
 
@@ -155,7 +155,7 @@ export default function ReviewModal({ isOpen, onClose }) {
               <span className="animate-pulse-soft">Submitting…</span>
             ) : (
               <>
-                <Send className="w-4 h-4" />
+                <Send className="h-4 w-4" />
                 Submit verified review
               </>
             )}

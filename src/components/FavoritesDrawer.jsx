@@ -4,6 +4,7 @@ import { MENU_ITEMS } from '../data/menuData';
 import { formatPrice } from '../utils/format';
 import { useLockBodyScroll, useEscape } from '../hooks/useMotion';
 import { X, Heart, Plus, Trash2 } from 'lucide-react';
+import dishPlaceholder from '../assets/dish-placeholder.jpg';
 
 /**
  * Saved favorites — quick order list in a slide-in drawer.
@@ -32,23 +33,23 @@ export default function FavoritesDrawer({ onOpenModal }) {
       aria-label="Favorites"
     >
       <div
-        className="absolute inset-0 bg-ink-950/75 backdrop-blur-sm animate-fade-in"
+        className="absolute inset-0 bg-cocoa-950/50 backdrop-blur-sm animate-fade-in"
         onClick={() => setIsFavoritesOpen(false)}
       />
 
-      <div className="absolute inset-y-0 right-0 w-full max-w-md flex animate-slide-in-right">
-        <div className="flex w-full flex-col bg-ink-900 border-l border-white/[0.08] shadow-glow-soft">
+      <div className="absolute inset-y-0 right-0 flex w-full max-w-md animate-slide-in-right">
+        <div className="flex w-full flex-col border-l border-cream-300 bg-cream-50 shadow-overlay">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-white/[0.07] px-5 py-4 sm:px-6">
+          <div className="flex items-center justify-between border-b border-cream-300 bg-white px-5 py-4 sm:px-6">
             <div className="flex items-center gap-3.5">
-              <span className="grid w-10 h-10 place-items-center rounded-xl border border-rose-400/30 bg-rose-500/10 text-rose-400">
-                <Heart className="w-[18px] h-[18px] fill-rose-500" />
+              <span className="grid h-10 w-10 place-items-center rounded-xl bg-caramel-100 text-caramel-600">
+                <Heart className="h-[18px] w-[18px] fill-caramel-500" />
               </span>
               <div>
-                <h3 className="font-display text-lg font-bold tracking-tight text-cream-50">
+                <h3 className="font-display text-lg font-extrabold tracking-tight text-cocoa-900">
                   My Favorites
                 </h3>
-                <p className="text-[11px] text-cream-500 font-semibold">
+                <p className="text-[11px] font-semibold text-cocoa-500">
                   {favoriteProducts.length} saved {favoriteProducts.length === 1 ? 'item' : 'items'}
                 </p>
               </div>
@@ -57,10 +58,10 @@ export default function FavoritesDrawer({ onOpenModal }) {
               type="button"
               onClick={() => setIsFavoritesOpen(false)}
               autoFocus
-              className="grid w-9 h-9 place-items-center rounded-xl border border-white/[0.08] bg-white/[0.03] text-cream-400 transition-colors hover:text-cream-50 hover:bg-white/[0.08]"
+              className="btn-icon"
               aria-label="Close favorites"
             >
-              <X className="w-5 h-5" />
+              <X className="h-5 w-5" />
             </button>
           </div>
 
@@ -74,18 +75,21 @@ export default function FavoritesDrawer({ onOpenModal }) {
                     setIsFavoritesOpen(false);
                     onOpenModal(item);
                   }}
-                  className="group flex cursor-pointer gap-3.5 rounded-2xl border border-white/[0.06] bg-ink-800/70 p-3.5 transition-colors duration-200 hover:border-white/[0.14]"
+                  className="group flex cursor-pointer gap-3.5 rounded-2xl border border-cream-300 bg-white p-3.5 transition-colors duration-200 hover:border-caramel-400/60"
                 >
                   <img
                     src={item.image}
                     alt={item.name}
                     loading="lazy"
-                    className="h-16 w-16 shrink-0 rounded-xl border border-white/[0.08] object-cover"
+                    onError={(e) => {
+                      if (e.currentTarget.src !== dishPlaceholder) e.currentTarget.src = dishPlaceholder;
+                    }}
+                    className="h-16 w-16 shrink-0 rounded-xl border border-cream-300 object-cover"
                   />
                   <div className="flex min-w-0 flex-1 flex-col justify-between gap-2">
                     <div>
                       <div className="flex items-start justify-between gap-1.5">
-                        <h4 className="truncate text-[13px] font-bold text-cream-50 transition-colors group-hover:text-gold-200">
+                        <h4 className="truncate text-[13px] font-bold text-cocoa-900">
                           {item.name}
                         </h4>
                         <button
@@ -94,18 +98,18 @@ export default function FavoritesDrawer({ onOpenModal }) {
                             e.stopPropagation();
                             toggleFavorite(item.id);
                           }}
-                          className="p-1 text-cream-600 transition-colors hover:text-rose-400"
+                          className="p-1 text-cocoa-400 transition-colors hover:text-ember-500"
                           aria-label={`Remove ${item.name} from favorites`}
                         >
-                          <Trash2 className="w-3.5 h-3.5" />
+                          <Trash2 className="h-3.5 w-3.5" />
                         </button>
                       </div>
-                      <p className="mt-0.5 line-clamp-1 text-[11.5px] text-cream-500">
+                      <p className="mt-0.5 line-clamp-1 text-[11.5px] text-cocoa-500">
                         {item.description}
                       </p>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="font-display text-sm font-extrabold text-gold-300 tabular-nums">
+                      <span className="font-display text-sm font-extrabold text-cocoa-900 tabular-nums">
                         {formatPrice(item.price)}
                       </span>
                       <button
@@ -114,10 +118,10 @@ export default function FavoritesDrawer({ onOpenModal }) {
                           e.stopPropagation();
                           addToCart(item, 1);
                         }}
-                        className="inline-flex items-center gap-1 rounded-full bg-white/[0.06] border border-white/[0.1] px-3.5 py-1.5 text-xs font-bold text-cream-50 transition-all duration-200 hover:bg-ember-500 hover:border-ember-500 active:scale-95"
+                        className="inline-flex items-center gap-1 rounded-full bg-cocoa-900 px-3.5 py-1.5 text-xs font-bold text-cream-50 transition-all duration-200 hover:bg-caramel-500 hover:text-cocoa-950 active:scale-95"
                         aria-label={`Add ${item.name} to cart`}
                       >
-                        <Plus className="w-3.5 h-3.5" strokeWidth={2.6} />
+                        <Plus className="h-3.5 w-3.5" strokeWidth={2.6} />
                         Add
                       </button>
                     </div>
@@ -126,13 +130,13 @@ export default function FavoritesDrawer({ onOpenModal }) {
               ))
             ) : (
               <div className="space-y-3 py-16 text-center">
-                <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl border border-white/[0.07] bg-white/[0.03] text-3xl">
+                <div className="mx-auto grid h-16 w-16 place-items-center rounded-full border border-cream-300 bg-cream-100 text-3xl">
                   ❤️
                 </div>
-                <h4 className="font-display text-base font-bold text-cream-50">
+                <h4 className="font-display text-base font-extrabold text-cocoa-900">
                   No favorites saved yet
                 </h4>
-                <p className="mx-auto max-w-[240px] text-xs leading-relaxed text-cream-500">
+                <p className="mx-auto max-w-[240px] text-xs leading-relaxed text-cocoa-500">
                   Tap the heart on any burger or dish to save it here for
                   one-tap reordering.
                 </p>

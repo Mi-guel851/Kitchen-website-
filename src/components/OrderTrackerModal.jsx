@@ -40,10 +40,10 @@ export default function OrderTrackerModal() {
   const secondsLeft = timerSeconds % 60;
 
   const steps = [
-    { title: 'Confirmed', desc: 'Ticket sent to grill', icon: CheckCircle2 },
-    { title: 'In The Kitchen', desc: 'Smashed on 450°F iron', icon: ChefHat },
-    { title: 'Out For Delivery', desc: 'Heat-lock bag sealed', icon: Bike },
-    { title: 'Delivered', desc: 'Enjoy your Big Burger', icon: Flame },
+    { title: 'Confirmed', short: 'Confirmed', desc: 'Ticket sent to grill', icon: CheckCircle2 },
+    { title: 'In The Kitchen', short: 'Cooking', desc: 'Smashed on 450°F iron', icon: ChefHat },
+    { title: 'Out For Delivery', short: 'On the way', desc: 'Heat-lock bag sealed', icon: Bike },
+    { title: 'Delivered', short: 'Delivered', desc: 'Enjoy your Big Burger', icon: Flame },
   ];
 
   const handleSimulateNextStep = () => {
@@ -63,34 +63,34 @@ export default function OrderTrackerModal() {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-ink-950/85 backdrop-blur-md animate-fade-in overflow-y-auto"
+      className="fixed inset-0 z-50 flex animate-fade-in items-center justify-center overflow-y-auto bg-cocoa-950/55 p-3 backdrop-blur-sm sm:p-6"
       role="dialog"
       aria-modal="true"
       aria-label="Order tracking"
     >
       <div
-        className="relative flex my-4 max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-[1.75rem] border border-white/[0.09] bg-ink-850 shadow-glow-soft animate-scale-in"
+        className="relative my-4 flex max-h-[92dvh] w-full max-w-2xl flex-col overflow-hidden rounded-4xl border border-cream-300 bg-cream-50 shadow-overlay animate-scale-in"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex shrink-0 items-center justify-between border-b border-white/[0.07] px-5 py-4 sm:px-6">
+        <div className="flex shrink-0 items-center justify-between border-b border-cream-300 bg-white px-5 py-4 sm:px-6">
           <div className="flex items-center gap-3.5">
-            <span className="relative grid w-10 h-10 place-items-center rounded-xl border border-emerald-400/30 bg-emerald-400/10 text-emerald-400">
-              <Bike className="w-[18px] h-[18px]" />
-              <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse-soft ring-2 ring-ink-850" />
+            <span className="relative grid h-10 w-10 place-items-center rounded-xl bg-success-500/10 text-success-500">
+              <Bike className="h-[18px] w-[18px]" />
+              <span className="absolute -right-1 -top-1 h-2.5 w-2.5 animate-pulse-soft rounded-full bg-success-500 ring-2 ring-white" />
             </span>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="font-display text-lg font-extrabold tracking-tight text-cream-50">
+                <h3 className="font-display text-lg font-extrabold tracking-tight text-cocoa-900">
                   Live Order Tracking
                 </h3>
-                <span className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2 py-0.5 font-mono text-[10px] font-bold text-emerald-300">
+                <span className="rounded-full bg-cream-200 px-2 py-0.5 font-mono text-[10px] font-bold text-cocoa-500">
                   {activeOrder.orderId}
                 </span>
               </div>
-              <p className="mt-0.5 text-[11px] text-cream-500">
+              <p className="mt-0.5 text-[11px] text-cocoa-500">
                 ETA{' '}
-                <strong className="font-black text-gold-300 tabular-nums">
+                <strong className="font-extrabold text-caramel-600 tabular-nums">
                   {minutesLeft}m {secondsLeft}s
                 </strong>
               </p>
@@ -100,21 +100,21 @@ export default function OrderTrackerModal() {
             type="button"
             onClick={() => setIsTrackerOpen(false)}
             autoFocus
-            className="grid w-9 h-9 place-items-center rounded-xl border border-white/[0.08] bg-white/[0.03] text-cream-400 transition-colors hover:text-cream-50 hover:bg-white/[0.08]"
+            className="btn-icon"
             aria-label="Close tracker"
           >
-            <X className="w-4 h-4" />
+            <X className="h-4 w-4" />
           </button>
         </div>
 
         {/* Body */}
         <div className="flex-1 space-y-5 overflow-y-auto p-5 sm:p-6">
           {/* Stepper */}
-          <div className="rounded-2xl border border-white/[0.07] bg-ink-900/60 p-5">
+          <div className="rounded-3xl border border-cream-300 bg-white p-5">
             <div className="relative grid grid-cols-4 gap-2">
-              <div className="absolute left-[12.5%] right-[12.5%] top-5 h-0.5 bg-white/[0.07]" aria-hidden="true">
+              <div className="absolute left-[12.5%] right-[12.5%] top-5 h-0.5 bg-cream-300" aria-hidden="true">
                 <div
-                  className="h-full bg-gradient-to-r from-ember-500 to-emerald-400 transition-all duration-700 ease-out"
+                  className="h-full bg-caramel-500 transition-all duration-700 ease-out"
                   style={{ width: `${(currentStep / 3) * 100}%` }}
                 />
               </div>
@@ -124,28 +124,29 @@ export default function OrderTrackerModal() {
                 return (
                   <div key={idx} className="relative z-10 flex flex-col items-center text-center">
                     <span
-                      className={`grid h-10 w-10 place-items-center rounded-2xl border transition-all duration-500 ${
+                      className={`grid h-10 w-10 place-items-center rounded-full border transition-all duration-500 ${
                         isCurrent
-                          ? 'border-ember-400 bg-ember-500 text-ink-950 shadow-glow-ember scale-110'
+                          ? 'scale-110 border-caramel-500 bg-caramel-500 text-cocoa-950'
                           : isPassed
-                          ? 'border-emerald-400/50 bg-emerald-500 text-ink-950'
-                          : 'border-white/[0.1] bg-ink-800 text-cream-600'
+                          ? 'border-caramel-300 bg-caramel-100 text-caramel-600'
+                          : 'border-cream-300 bg-cream-100 text-cocoa-400'
                       }`}
                     >
-                      <step.icon className="w-5 h-5" />
+                      <step.icon className="h-5 w-5" />
                     </span>
                     <span
                       className={`mt-2.5 text-[11px] font-bold ${
                         isCurrent
-                          ? 'text-gold-300'
+                          ? 'text-cocoa-900'
                           : isPassed
-                          ? 'text-cream-100'
-                          : 'text-cream-600'
+                          ? 'text-cocoa-700'
+                          : 'text-cocoa-400'
                       }`}
                     >
-                      {step.title}
+                      <span className="sm:hidden">{step.short}</span>
+                      <span className="hidden sm:inline">{step.title}</span>
                     </span>
-                    <span className="mt-0.5 hidden text-[9.5px] text-cream-600 sm:block">
+                    <span className="mt-0.5 hidden text-[9.5px] text-cocoa-400 sm:block">
                       {step.desc}
                     </span>
                   </div>
@@ -153,13 +154,13 @@ export default function OrderTrackerModal() {
               })}
             </div>
 
-            <div className="mt-5 flex items-center justify-between border-t border-white/[0.06] pt-4 text-xs">
-              <span className="text-cream-500">Live status simulation</span>
+            <div className="mt-5 flex items-center justify-between border-t border-cream-300 pt-4 text-xs">
+              <span className="text-cocoa-400">Live status simulation</span>
               <button
                 type="button"
                 onClick={handleSimulateNextStep}
                 disabled={currentStep >= 3}
-                className="rounded-lg border border-white/[0.1] bg-white/[0.05] px-3 py-1.5 font-bold text-cream-100 transition-colors hover:bg-white/[0.12] disabled:opacity-30"
+                className="rounded-lg border border-cocoa-900/15 bg-white px-3 py-1.5 font-bold text-cocoa-900 transition-colors hover:border-cocoa-900/40 disabled:opacity-30"
               >
                 {currentStep >= 3 ? 'Delivered ✓' : 'Simulate next step →'}
               </button>
@@ -168,28 +169,28 @@ export default function OrderTrackerModal() {
 
           {/* Courier */}
           {activeOrder.driver && (
-            <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/[0.07] bg-ink-900/60 p-4 sm:p-5">
+            <div className="flex items-center justify-between gap-4 rounded-3xl border border-cream-300 bg-white p-4 sm:p-5">
               <div className="flex items-center gap-3.5">
-                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-ember-500 to-gold-500 text-xl shadow-md">
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-caramel-100 text-xl">
                   🏍️
                 </span>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h4 className="text-sm font-extrabold text-cream-50">{activeOrder.driver.name}</h4>
-                    <span className="rounded-full bg-emerald-400/15 px-2 py-0.5 text-[9.5px] font-bold text-emerald-300">
+                    <h4 className="text-sm font-extrabold text-cocoa-900">{activeOrder.driver.name}</h4>
+                    <span className="rounded-full bg-success-500/10 px-2 py-0.5 text-[9.5px] font-bold text-success-500">
                       Your courier
                     </span>
                   </div>
-                  <p className="mt-0.5 text-[11.5px] text-cream-500">
+                  <p className="mt-0.5 text-[11.5px] text-cocoa-500">
                     {activeOrder.driver.vehicle}
                   </p>
                 </div>
               </div>
               <a
                 href={`tel:${activeOrder.driver.phone}`}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-400/30 bg-emerald-400/10 px-4 py-2.5 text-xs font-bold text-emerald-300 transition-colors hover:bg-emerald-400/20"
+                className="inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-cocoa-900/15 bg-white px-4 py-2.5 text-xs font-bold text-cocoa-900 transition-colors hover:border-cocoa-900/40"
               >
-                <PhoneCall className="w-3.5 h-3.5" />
+                <PhoneCall className="h-3.5 w-3.5" />
                 Call
               </a>
             </div>
@@ -197,39 +198,39 @@ export default function OrderTrackerModal() {
 
           {/* Destination + payment */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div className="rounded-2xl border border-white/[0.07] bg-ink-900/60 p-4">
-              <span className="flex items-center gap-1.5 text-[9.5px] font-black uppercase tracking-[0.2em] text-cream-600">
-                <MapPin className="w-3 h-3" /> Deliver To
+            <div className="rounded-3xl border border-cream-300 bg-white p-4">
+              <span className="flex items-center gap-1.5 text-[9.5px] font-extrabold uppercase tracking-[0.2em] text-cocoa-400">
+                <MapPin className="h-3 w-3" /> Deliver To
               </span>
-              <p className="mt-2 text-[13px] font-bold text-cream-50">
+              <p className="mt-2 text-[13px] font-bold text-cocoa-900">
                 {activeOrder.customerName} · {activeOrder.phone}
               </p>
-              <p className="mt-1 text-xs leading-relaxed text-cream-400">{activeOrder.address}</p>
+              <p className="mt-1 text-xs leading-relaxed text-cocoa-500">{activeOrder.address}</p>
             </div>
-            <div className="rounded-2xl border border-white/[0.07] bg-ink-900/60 p-4">
-              <span className="flex items-center gap-1.5 text-[9.5px] font-black uppercase tracking-[0.2em] text-cream-600">
-                <ShoppingBag className="w-3 h-3" /> Payment
+            <div className="rounded-3xl border border-cream-300 bg-white p-4">
+              <span className="flex items-center gap-1.5 text-[9.5px] font-extrabold uppercase tracking-[0.2em] text-cocoa-400">
+                <ShoppingBag className="h-3 w-3" /> Payment
               </span>
-              <p className="mt-2 text-[13px] font-bold text-cream-50">{activeOrder.paymentMethod}</p>
-              <p className="mt-1 font-display text-sm font-extrabold text-gold-300 tabular-nums">
+              <p className="mt-2 text-[13px] font-bold text-cocoa-900">{activeOrder.paymentMethod}</p>
+              <p className="mt-1 font-display text-sm font-extrabold text-cocoa-900 tabular-nums">
                 Total: {formatPrice(activeOrder.grandTotal)}
               </p>
             </div>
           </div>
 
           {/* Receipt */}
-          <div className="rounded-2xl border border-white/[0.07] bg-ink-900/60 p-4 sm:p-5">
-            <span className="text-[9.5px] font-black uppercase tracking-[0.2em] text-cream-600">
+          <div className="rounded-3xl border border-cream-300 bg-white p-4 sm:p-5">
+            <span className="text-[9.5px] font-extrabold uppercase tracking-[0.2em] text-cocoa-400">
               Items in this order
             </span>
-            <div className="mt-3 divide-y divide-white/[0.05]">
+            <div className="mt-3 divide-y divide-cream-300">
               {activeOrder.items.map((item, idx) => (
                 <div key={idx} className="flex items-center justify-between py-2 text-xs">
-                  <span className="text-cream-200">
-                    <span className="font-black text-gold-300">{item.quantity}×</span>{' '}
+                  <span className="text-cocoa-700">
+                    <span className="font-extrabold text-caramel-600">{item.quantity}×</span>{' '}
                     {item.name}
                   </span>
-                  <span className="font-bold text-cream-100 tabular-nums">
+                  <span className="font-bold text-cocoa-900 tabular-nums">
                     {formatPrice(item.unitPrice * item.quantity)}
                   </span>
                 </div>
@@ -239,20 +240,20 @@ export default function OrderTrackerModal() {
         </div>
 
         {/* Footer */}
-        <div className="flex shrink-0 items-center justify-between border-t border-white/[0.07] bg-ink-900 px-5 py-4">
+        <div className="flex shrink-0 items-center justify-between border-t border-cream-300 bg-white px-5 py-4">
           <button
             type="button"
             onClick={() => setIsTrackerOpen(false)}
-            className="text-xs font-bold text-cream-500 transition-colors hover:text-cream-100"
+            className="text-xs font-bold text-cocoa-400 transition-colors hover:text-cocoa-900"
           >
             Minimize
           </button>
           <button
             type="button"
             onClick={handleFinishOrder}
-            className="inline-flex items-center gap-2 rounded-xl border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-xs font-bold text-cream-100 transition-colors hover:bg-white/[0.12]"
+            className="inline-flex items-center gap-2 rounded-xl border border-cocoa-900/15 bg-white px-4 py-2.5 text-xs font-bold text-cocoa-900 transition-colors hover:border-cocoa-900/40"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
+            <RotateCcw className="h-3.5 w-3.5" />
             Order again
           </button>
         </div>

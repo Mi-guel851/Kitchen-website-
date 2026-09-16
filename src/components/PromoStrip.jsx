@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Copy, Check, Zap } from 'lucide-react';
+import { Copy, Check } from 'lucide-react';
 
 /**
- * Slim campaign strip above the navbar — the offer reads instantly,
- * the code behaves like a premium coupon chip (click to copy).
+ * Slim campaign strip above the navbar — a quiet line on warm paper.
  */
 export default function PromoStrip() {
   const [copied, setCopied] = useState(false);
@@ -19,32 +18,29 @@ export default function PromoStrip() {
   };
 
   return (
-    <div className="relative z-40 bg-ink-900 border-b border-white/[0.05]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-9 sm:h-10 flex items-center justify-center gap-2.5 sm:gap-3.5 text-[11px] sm:text-xs">
-        <span className="hidden md:inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-luxe text-cream-600">
-          <Zap className="w-3 h-3 text-ember-500 fill-ember-500" />
-          First Order
-        </span>
-        <span className="hidden md:inline-block w-px h-3.5 bg-white/10" aria-hidden="true" />
-        <span className="text-cream-300 truncate">
-          <span className="hidden sm:inline">Take </span>
-          <span className="font-black text-gold-400">20% off</span>
+    <div className="relative z-40 border-b border-cream-300 bg-cream-200">
+      <div className="shell flex h-10 items-center justify-center gap-2.5 text-[11px] sm:gap-3.5 sm:text-xs">
+        <span className="truncate text-cocoa-500">
+          <span className="font-bold text-cocoa-900">First order:</span>{' '}
+          <span className="font-extrabold text-caramel-600">20% off</span>
           <span className="hidden sm:inline"> your first Big Burger with code</span>
         </span>
         <button
           type="button"
           onClick={copyCode}
           aria-label="Copy promo code BIGBURGER20"
-          className="group inline-flex items-center gap-1.5 rounded-md border border-ember-500/40 bg-ember-500/10 pl-2.5 pr-2 py-[3px] font-mono text-[11px] font-bold tracking-[0.14em] text-ember-300 transition-all duration-200 hover:bg-ember-500/20 hover:border-ember-500/70"
+          className="group inline-flex shrink-0 items-center gap-1.5 rounded-full border border-caramel-500/40 bg-caramel-50 py-[3px] pl-2.5 pr-2 font-mono text-[11px] font-bold tracking-[0.14em] text-caramel-600 transition-all duration-200 hover:border-caramel-500 hover:bg-caramel-100"
         >
           {copied ? 'COPIED' : 'BIGBURGER20'}
           {copied ? (
-            <Check className="w-3 h-3 text-emerald-400" strokeWidth={3} />
+            <Check className="h-3 w-3 text-success-500" strokeWidth={3} />
           ) : (
-            <Copy className="w-3 h-3 opacity-50 group-hover:opacity-100 transition-opacity" />
+            <Copy className="h-3 w-3 opacity-50 transition-opacity group-hover:opacity-100" />
           )}
         </button>
-        <span className="hidden lg:inline text-cream-600">· Free delivery over ₦15,000</span>
+        <span className="hidden shrink-0 text-cocoa-400 lg:inline">
+          · Free delivery over ₦15,000
+        </span>
       </div>
     </div>
   );

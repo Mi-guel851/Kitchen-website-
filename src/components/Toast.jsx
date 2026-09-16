@@ -4,29 +4,29 @@ import { CheckCircle2, Info, Sparkles, X, AlertCircle } from 'lucide-react';
 
 const STYLES = {
   success: {
-    icon: <CheckCircle2 className="w-[18px] h-[18px] text-emerald-400 shrink-0" />,
-    accent: 'bg-emerald-400',
-    border: 'border-emerald-400/25',
+    icon: <CheckCircle2 className="h-[18px] w-[18px] shrink-0 text-success-500" />,
+    accent: 'bg-success-500',
+    border: 'border-cream-300',
   },
   promo: {
-    icon: <Sparkles className="w-[18px] h-[18px] text-gold-400 shrink-0" />,
-    accent: 'bg-gold-400',
-    border: 'border-gold-400/30',
+    icon: <Sparkles className="h-[18px] w-[18px] shrink-0 text-caramel-500" />,
+    accent: 'bg-caramel-500',
+    border: 'border-caramel-400/50',
   },
   info: {
-    icon: <Info className="w-[18px] h-[18px] text-cream-300 shrink-0" />,
-    accent: 'bg-cream-300',
-    border: 'border-white/15',
+    icon: <Info className="h-[18px] w-[18px] shrink-0 text-cocoa-500" />,
+    accent: 'bg-cocoa-500',
+    border: 'border-cream-300',
   },
   error: {
-    icon: <AlertCircle className="w-[18px] h-[18px] text-rose-400 shrink-0" />,
-    accent: 'bg-rose-500',
-    border: 'border-rose-500/35',
+    icon: <AlertCircle className="h-[18px] w-[18px] shrink-0 text-ember-500" />,
+    accent: 'bg-ember-500',
+    border: 'border-ember-500/35',
   },
 };
 
 /**
- * Toast notifications — top-right, clear type colors, gentle slide-in.
+ * Toast notifications — top-right, white cards, gentle slide-in.
  */
 export default function ToastContainer() {
   const { toasts, removeToast } = useCart();
@@ -44,26 +44,26 @@ export default function ToastContainer() {
         return (
           <div
             key={toast.id}
-            className={`pointer-events-auto relative flex items-start gap-3 overflow-hidden rounded-xl border ${s.border} bg-ink-800/95 p-3.5 pl-4 shadow-glow-soft backdrop-blur-xl animate-toast-in`}
+            className={`pointer-events-auto relative flex animate-toast-in items-start gap-3 overflow-hidden rounded-2xl border ${s.border} bg-white p-3.5 pl-4 shadow-float`}
             role="status"
           >
             <span className={`absolute bottom-0 left-0 top-0 w-[3px] ${s.accent}`} aria-hidden="true" />
             <div className="mt-px">{s.icon}</div>
-            <div className="flex-1 min-w-0">
+            <div className="min-w-0 flex-1">
               {toast.title && (
-                <h4 className="text-[13px] font-bold tracking-wide text-cream-50">
+                <h4 className="text-[13px] font-extrabold tracking-wide text-cocoa-900">
                   {toast.title}
                 </h4>
               )}
-              <p className="mt-0.5 text-xs leading-relaxed text-cream-400">{toast.message}</p>
+              <p className="mt-0.5 text-xs leading-relaxed text-cocoa-500">{toast.message}</p>
             </div>
             <button
               type="button"
               onClick={() => removeToast(toast.id)}
-              className="shrink-0 p-1 text-cream-600 transition-colors hover:text-cream-100"
+              className="shrink-0 p-1 text-cocoa-400 transition-colors hover:text-cocoa-900"
               aria-label="Dismiss notification"
             >
-              <X className="w-4 h-4" />
+              <X className="h-4 w-4" />
             </button>
           </div>
         );

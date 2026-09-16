@@ -16,7 +16,6 @@ import {
 
 const NAV_LINKS = [
   { name: 'Home', href: '#home' },
-  { name: 'Favorites', href: '#favorites' },
   { name: 'Menu', href: '#menu' },
   { name: 'Offers', href: '#offers' },
   { name: 'Why Us', href: '#about' },
@@ -73,7 +72,7 @@ export default function Navbar({ onSearchOpen }) {
     setMobileMenuOpen(false);
     const element = document.querySelector(href);
     if (element) {
-      const navOffset = 84;
+      const navOffset = 92;
       const offsetPosition =
         element.getBoundingClientRect().top + window.pageYOffset - navOffset;
       window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
@@ -84,12 +83,12 @@ export default function Navbar({ onSearchOpen }) {
     <header
       className={`sticky top-0 z-40 transition-all duration-300 ${
         isScrolled
-          ? 'bg-ink-950/85 backdrop-blur-xl border-b border-white/[0.07] shadow-[0_8px_32px_-12px_rgba(0,0,0,0.7)]'
-          : 'bg-ink-950/40 backdrop-blur-md border-b border-transparent'
+          ? 'border-b border-cream-300 bg-cream-50/90 shadow-[0_10px_32px_-20px_rgba(36,19,13,0.25)] backdrop-blur-xl'
+          : 'border-b border-transparent bg-cream-100/70 backdrop-blur-md'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-[72px] gap-3">
+      <div className="shell">
+        <div className="flex h-16 items-center justify-between gap-2 sm:h-[72px] sm:gap-4">
           {/* Brand */}
           <a
             href="#home"
@@ -103,7 +102,7 @@ export default function Navbar({ onSearchOpen }) {
           {/* Desktop nav */}
           <nav
             aria-label="Primary"
-            className="hidden lg:flex items-center gap-0.5"
+            className="hidden items-center gap-1 lg:flex"
           >
             {NAV_LINKS.map((link) => {
               const isActive = activeSection === link.href.slice(1);
@@ -113,65 +112,63 @@ export default function Navbar({ onSearchOpen }) {
                   href={link.href}
                   onClick={(e) => handleScrollTo(e, link.href)}
                   aria-current={isActive ? 'page' : undefined}
-                  className={`relative px-3.5 py-2 text-[13px] font-semibold tracking-wide transition-colors duration-200 ${
-                    isActive ? 'text-cream-50' : 'text-cream-400 hover:text-cream-100'
+                  className={`relative rounded-full px-3.5 py-2 text-[13px] font-bold tracking-wide transition-colors duration-200 ${
+                    isActive
+                      ? 'bg-cocoa-900/[0.06] text-cocoa-900'
+                      : 'text-cocoa-500 hover:text-cocoa-900'
                   }`}
                 >
                   {link.name}
-                  <span
-                    aria-hidden="true"
-                    className={`absolute left-1/2 -bottom-0.5 -translate-x-1/2 h-[3px] w-[3px] rounded-full bg-ember-500 transition-all duration-300 ${
-                      isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
-                    }`}
-                  />
                 </a>
               );
             })}
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center gap-1.5 sm:gap-2">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             {/* Search */}
             <button
               type="button"
               onClick={onSearchOpen}
-              className="p-2.5 rounded-xl border border-white/[0.08] bg-white/[0.03] text-cream-300 hover:text-cream-50 hover:bg-white/[0.08] transition-all duration-200"
+              className="btn-icon hidden sm:grid"
               title="Search menu"
               aria-label="Search menu items"
             >
-              <Search className="w-4 h-4" />
+              <Search className="h-[17px] w-[17px]" />
             </button>
 
             {/* Favorites */}
             <button
               type="button"
               onClick={() => setIsFavoritesOpen(true)}
-              className="relative p-2.5 rounded-xl border border-white/[0.08] bg-white/[0.03] text-cream-300 hover:text-rose-300 hover:bg-white/[0.08] transition-all duration-200"
+              className="btn-icon hidden sm:grid"
               title="View favorites"
               aria-label={`Favorites (${favorites.length})`}
             >
               <Heart
-                className={`w-4 h-4 ${favorites.length > 0 ? 'fill-rose-500 text-rose-500' : ''}`}
+                className={`h-[17px] w-[17px] ${
+                  favorites.length > 0 ? 'fill-caramel-500 text-caramel-500' : ''
+                }`}
               />
               {favorites.length > 0 && (
                 <span
                   key={favorites.length}
-                  className="absolute -top-1.5 -right-1.5 min-w-[17px] h-[17px] px-1 rounded-full bg-rose-500 text-white text-[9px] font-black grid place-items-center ring-2 ring-ink-950 animate-pop"
+                  className="absolute -right-1 -top-1 grid h-[17px] min-w-[17px] animate-pop place-items-center rounded-full bg-caramel-500 px-1 text-[9px] font-black text-cocoa-950 ring-2 ring-cream-50"
                 >
                   {favorites.length}
                 </span>
               )}
             </button>
 
-            {/* Active order */}
+            {/* Active order — desktop only chip */}
             {activeOrder && (
               <button
                 type="button"
                 onClick={() => setIsTrackerOpen(true)}
-                className="hidden sm:inline-flex items-center gap-2 px-3.5 h-10 rounded-xl border border-emerald-400/30 bg-emerald-400/10 text-emerald-300 text-xs font-bold hover:bg-emerald-400/20 transition-colors"
+                className="hidden h-10 items-center gap-2 rounded-full border border-success-500/30 bg-success-500/10 px-3.5 text-xs font-bold text-success-500 transition-colors hover:bg-success-500/15 md:inline-flex"
                 title="Track active order"
               >
-                <Bike className="w-4 h-4" />
+                <Bike className="h-4 w-4" />
                 Track Order
               </button>
             )}
@@ -180,21 +177,21 @@ export default function Navbar({ onSearchOpen }) {
             <button
               type="button"
               onClick={() => setIsCartOpen(true)}
-              className="relative inline-flex items-center gap-2 h-10 sm:h-11 rounded-full pl-3 pr-3.5 sm:pr-4 text-sm font-bold text-white bg-gradient-to-b from-ember-400 via-ember-500 to-ember-600 ring-1 ring-inset ring-white/25 shadow-glow-ember transition-all duration-200 hover:brightness-110 hover:-translate-y-px active:scale-95"
+              className="relative inline-flex h-10 items-center gap-2 rounded-full bg-cocoa-900 pl-3 pr-3.5 text-sm font-bold text-cream-50 shadow-btn transition-all duration-200 hover:bg-cocoa-800 hover:shadow-btn-hover active:scale-95 sm:h-11 sm:pr-4"
               aria-label={`Open cart — ${totalItemsCount} items`}
             >
               <span className="relative">
-                <ShoppingBag className="w-4 h-4" strokeWidth={2.4} />
+                <ShoppingBag className="h-4 w-4" strokeWidth={2.4} />
                 {totalItemsCount > 0 && (
                   <span
                     key={totalItemsCount}
-                    className="absolute -top-2 -right-2.5 min-w-[18px] h-[18px] px-1 rounded-full bg-ink-950 text-gold-300 text-[10px] font-black grid place-items-center ring-1 ring-gold-400/60 animate-pop"
+                    className="absolute -right-2 -top-2 grid h-[18px] min-w-[18px] animate-pop place-items-center rounded-full bg-caramel-400 px-1 text-[10px] font-black text-cocoa-950 ring-2 ring-cocoa-900"
                   >
                     {totalItemsCount}
                   </span>
                 )}
               </span>
-              <span className="hidden sm:block text-[13px] tracking-tight">
+              <span className="hidden text-[13px] tracking-tight sm:block">
                 {totalItemsCount > 0 ? formatPrice(subtotal) : 'Cart'}
               </span>
             </button>
@@ -203,11 +200,11 @@ export default function Navbar({ onSearchOpen }) {
             <button
               type="button"
               onClick={() => setMobileMenuOpen((v) => !v)}
-              className="lg:hidden p-2.5 rounded-xl border border-white/[0.08] bg-white/[0.03] text-cream-300 hover:text-cream-50 transition-colors"
+              className="btn-icon lg:hidden"
               aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={mobileMenuOpen}
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <MenuIcon className="w-5 h-5" />}
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <MenuIcon className="h-5 w-5" />}
             </button>
           </div>
         </div>
@@ -215,22 +212,47 @@ export default function Navbar({ onSearchOpen }) {
 
       {/* Mobile dropdown */}
       {mobileMenuOpen && (
-        <div className="lg:hidden absolute inset-x-0 top-full bg-ink-900/95 backdrop-blur-2xl border-b border-white/[0.08] shadow-glow-soft animate-fade-in">
-          <nav aria-label="Mobile" className="px-4 pt-3 pb-6 space-y-1">
-            {NAV_LINKS.map((link, i) => (
+        <div className="absolute inset-x-0 top-full animate-fade-in border-b border-cream-300 bg-cream-50 shadow-float lg:hidden">
+          <nav aria-label="Mobile" className="shell space-y-1 px-0 pb-6 pt-3">
+            {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={(e) => handleScrollTo(e, link.href)}
-                className="flex items-center justify-between px-3.5 py-3.5 rounded-xl text-[15px] font-semibold text-cream-100 hover:bg-white/[0.05] transition-colors"
-                style={{ animationDelay: `${i * 40}ms` }}
+                className="flex items-center justify-between rounded-xl px-3.5 py-3.5 text-[15px] font-bold text-cocoa-900 transition-colors hover:bg-cocoa-900/[0.04]"
               >
                 <span>{link.name}</span>
-                <span className="text-cream-600 text-xs" aria-hidden="true">
+                <span className="text-cocoa-400 text-xs" aria-hidden="true">
                   →
                 </span>
               </a>
             ))}
+
+            {/* Mobile-only search + favorites */}
+            <div className="flex gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onSearchOpen();
+                }}
+                className="btn-secondary flex-1 !py-3 text-xs"
+              >
+                <Search className="h-4 w-4" />
+                Search menu
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setIsFavoritesOpen(true);
+                }}
+                className="btn-secondary flex-1 !py-3 text-xs"
+              >
+                <Heart className="h-4 w-4" />
+                Favorites ({favorites.length})
+              </button>
+            </div>
 
             {activeOrder && (
               <button
@@ -239,20 +261,20 @@ export default function Navbar({ onSearchOpen }) {
                   setMobileMenuOpen(false);
                   setIsTrackerOpen(true);
                 }}
-                className="w-full flex items-center justify-center gap-2 py-3.5 mt-2 rounded-xl border border-emerald-400/30 bg-emerald-400/10 text-emerald-300 font-bold text-sm"
+                className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border border-success-500/30 bg-success-500/10 py-3.5 text-sm font-bold text-success-500"
               >
-                <Bike className="w-4 h-4" />
+                <Bike className="h-4 w-4" />
                 Track Active Order ({activeOrder.orderId})
               </button>
             )}
 
-            <div className="pt-4 mt-4 border-t border-white/[0.07] flex items-center justify-between text-xs text-cream-500 px-1">
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-cream-300 px-1 pt-4 text-xs text-cocoa-500">
               <span className="flex items-center gap-1.5">
-                <PhoneCall className="w-3.5 h-3.5 text-ember-500" />
+                <PhoneCall className="h-3.5 w-3.5 text-caramel-500" />
                 +234 800 BIG BURGER
               </span>
               <span className="flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-gold-400" />
+                <Clock className="h-3.5 w-3.5 text-caramel-500" />
                 Open till 11 PM
               </span>
             </div>

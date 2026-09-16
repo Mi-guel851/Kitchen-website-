@@ -1,62 +1,59 @@
 import React from 'react';
-import { Flame, Sparkles, Truck, HeartHandshake } from 'lucide-react';
+import { Star, Clock, Beef } from 'lucide-react';
 import Reveal from './ui/Reveal';
 
-const FEATURES = [
+const METRICS = [
   {
-    icon: Flame,
-    title: 'Smashed at 450°F',
-    subtitle: 'Crispy caramelized crusts, every time',
+    icon: Beef,
+    value: '100% Prime Angus',
+    label: 'Certified Halal · Never Frozen',
   },
   {
-    icon: Sparkles,
-    title: 'Buttery Brioche Buns',
-    subtitle: 'Baked fresh every single morning',
+    icon: Star,
+    value: '4.9 / 5',
+    label: '2,500+ Happy Foodies',
   },
   {
-    icon: Truck,
-    title: '28-Min Heat-Lock Delivery',
-    subtitle: 'Arrives sizzling hot at your door',
-  },
-  {
-    icon: HeartHandshake,
-    title: 'Secret House Sauces',
-    subtitle: 'Crafted in-house, daily',
+    icon: Clock,
+    value: '28 Min',
+    label: 'Average Delivery Time',
   },
 ];
 
 /**
- * Quiet spec-sheet strip under the hero — one line of craft promises.
+ * Structured trust strip — three quality metrics in one calm editorial band.
+ * Horizontal on desktop, stacked on mobile.
  */
 export default function QuickStats() {
   return (
-    <div className="relative z-10 border-b border-white/[0.05] bg-ink-900/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section aria-label="Quality and service metrics" className="border-y border-cream-300 bg-white">
+      <div className="shell">
         <Reveal>
-          <div className="grid grid-cols-2 lg:grid-cols-4">
-            {FEATURES.map((f, i) => (
+          <dl className="grid grid-cols-1 sm:grid-cols-3">
+            {METRICS.map((m, i) => (
               <div
-                key={i}
-                className={`group flex items-center gap-3.5 py-5 lg:py-6 px-4 sm:px-6 border-white/[0.05] border-b lg:border-b-0 even:border-l lg:border-l lg:first:border-l-0 [&:nth-child(n+3)]:border-t lg:[&:nth-child(n+3)]:border-t-0 ${
-                  i === 0 ? 'pl-0' : ''
-                }`}
+                key={m.label}
+                className={`flex items-center gap-4 px-2 py-5 sm:px-8 sm:py-7 ${
+                  i > 0 ? 'border-t border-cream-300 sm:border-t-0 sm:border-l' : ''
+                } ${i === 0 ? 'sm:pl-0' : ''} ${i === 2 ? 'sm:pr-0' : ''}`}
               >
-                <span className="grid w-10 h-10 shrink-0 place-items-center rounded-xl bg-white/[0.04] border border-white/[0.07] text-ember-400 transition-transform duration-300 group-hover:scale-105">
-                  <f.icon className="w-[18px] h-[18px]" />
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-caramel-100 text-caramel-600">
+                  <m.icon className="h-5 w-5" strokeWidth={2.1} />
                 </span>
                 <span>
-                  <span className="block text-xs font-bold tracking-wide text-cream-100 uppercase">
-                    {f.title}
-                  </span>
-                  <span className="block text-[11px] text-cream-500 mt-1 leading-snug">
-                    {f.subtitle}
-                  </span>
+                  <dt className="sr-only">{m.label}</dt>
+                  <dd className="font-display text-base font-extrabold tracking-tight text-cocoa-900 sm:text-lg">
+                    {m.value}
+                  </dd>
+                  <dd className="mt-0.5 text-[11.5px] font-semibold text-cocoa-500">
+                    {m.label}
+                  </dd>
                 </span>
               </div>
             ))}
-          </div>
+          </dl>
         </Reveal>
       </div>
-    </div>
+    </section>
   );
 }

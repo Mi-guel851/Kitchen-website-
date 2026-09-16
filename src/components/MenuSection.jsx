@@ -71,25 +71,21 @@ export default function MenuSection({ onOpenModal, searchInputRef }) {
   };
 
   return (
-    <section id="menu" className="relative py-16 sm:py-24">
-      <div
-        className="absolute top-1/4 -right-32 w-96 h-96 bg-gold-500/[0.05] blur-[130px] rounded-full pointer-events-none"
-        aria-hidden="true"
-      />
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="menu" className="py-16 sm:py-24">
+      <div className="shell">
         {/* Header */}
         <Reveal>
-          <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
-            <p className="eyebrow justify-center">
-              <span className="w-6 h-px bg-gold-500/60" aria-hidden="true" />
+          <div className="max-w-2xl">
+            <p className="eyebrow">
+              <span className="eyebrow-rule" aria-hidden="true" />
               Fresh From The Kitchen
-              <span className="w-6 h-px bg-gold-500/60" aria-hidden="true" />
             </p>
-            <h2 className="mt-4 font-display text-3xl sm:text-4xl lg:text-[2.9rem] font-extrabold tracking-[-0.02em] leading-[1.02] text-cream-50">
-              Explore the artisan menu
+            <h2 className="mt-4 font-display text-[clamp(1.9rem,5.6vw,2.9rem)] font-extrabold leading-[1.05] tracking-[-0.02em] text-cocoa-900">
+              The burgers
+              <br />
+              you&rsquo;ve been craving.
             </h2>
-            <p className="mt-3 text-sm sm:text-base text-cream-400">
+            <p className="mt-4 text-sm text-cocoa-500 sm:text-base">
               Every dish is built to order — premium Angus beef, daily-baked
               brioche, and ingredients you can taste.
             </p>
@@ -98,35 +94,35 @@ export default function MenuSection({ onOpenModal, searchInputRef }) {
 
         {/* Search + filters */}
         <Reveal delay={80}>
-          <div className="rounded-[1.5rem] bg-ink-850/90 border border-white/[0.06] p-3.5 sm:p-5 shadow-card space-y-4">
-            <div className="flex flex-col md:flex-row md:items-center gap-3.5">
+          <div className="mt-8 space-y-3.5 sm:mt-10">
+            <div className="flex flex-col gap-3 md:flex-row md:items-center">
               {/* Search */}
-              <div className="relative w-full md:flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-cream-500 pointer-events-none" />
+              <div className="relative w-full md:max-w-sm">
+                <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-cocoa-400" />
                 <input
                   ref={searchInputRef}
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search burgers, wings, fries, shakes…"
+                  placeholder="Search burgers, wings, fries…"
                   aria-label="Search the menu"
-                  className="w-full bg-ink-950/80 border border-white/[0.08] rounded-xl pl-11 pr-10 py-3 text-sm text-cream-50 placeholder-cream-600 transition-all duration-200 focus:outline-none focus:border-ember-500/70 focus:ring-2 focus:ring-ember-500/20"
+                  className="input-light !rounded-full !py-3 pl-11 pr-10"
                 />
                 {searchQuery && (
                   <button
                     type="button"
                     onClick={() => setSearchQuery('')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-md text-cream-500 hover:text-cream-100 transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-cocoa-400 transition-colors hover:text-cocoa-900"
                     aria-label="Clear search"
                   >
-                    <X className="w-4 h-4" />
+                    <X className="h-4 w-4" />
                   </button>
                 )}
               </div>
 
               {/* Feature filters */}
               <div
-                className="flex items-center gap-2 w-full md:w-auto overflow-x-auto no-scrollbar"
+                className="flex items-center gap-2 w-full overflow-x-auto no-scrollbar md:w-auto md:flex-wrap"
                 role="group"
                 aria-label="Quick filters"
               >
@@ -138,14 +134,14 @@ export default function MenuSection({ onOpenModal, searchInputRef }) {
                       type="button"
                       onClick={() => setActiveFilter(f.id)}
                       aria-pressed={isActive}
-                      className={`inline-flex items-center gap-1.5 rounded-full h-10 px-3.5 text-xs font-bold whitespace-nowrap transition-all duration-200 active:scale-95 ${
+                      className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2.5 text-xs font-bold whitespace-nowrap transition-all duration-200 active:scale-95 ${
                         isActive
-                          ? 'bg-cream-50 text-ink-950 shadow-md'
-                          : 'text-cream-400 border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.06] hover:text-cream-100'
+                          ? 'bg-cocoa-900 text-cream-50 shadow-btn'
+                          : 'border border-cream-300 bg-white text-cocoa-500 hover:border-cocoa-900/30 hover:text-cocoa-900'
                       }`}
                     >
                       <f.icon
-                        className={`w-3.5 h-3.5 ${isActive ? 'text-ember-600' : 'text-cream-500'}`}
+                        className={`h-3.5 w-3.5 ${isActive ? 'text-caramel-400' : 'text-cocoa-400'}`}
                       />
                       {f.label}
                     </button>
@@ -153,25 +149,25 @@ export default function MenuSection({ onOpenModal, searchInputRef }) {
                 })}
               </div>
             </div>
+
+            {/* Sticky category rail */}
+            <div className="sticky top-16 z-30 -mx-4 border-y border-cream-300 bg-cream-100/95 px-4 py-3 backdrop-blur-xl sm:mx-0 sm:rounded-2xl sm:border sm:px-3">
+              <CategoryTabs
+                activeCategory={activeCategory}
+                onSelectCategory={setActiveCategory}
+                counts={categoryCounts}
+              />
+            </div>
           </div>
         </Reveal>
 
-        {/* Sticky category rail */}
-        <div className="sticky top-16 sm:top-[72px] z-30 -mx-4 sm:mx-0 px-4 sm:px-0 py-3 bg-ink-950/85 backdrop-blur-xl sm:rounded-2xl sm:border sm:border-white/[0.05] sm:bg-ink-900/70 sm:my-4">
-          <CategoryTabs
-            activeCategory={activeCategory}
-            onSelectCategory={setActiveCategory}
-            counts={categoryCounts}
-          />
-        </div>
-
         {/* Results meta */}
-        <div className="flex items-center justify-between mb-6 px-0.5">
-          <div className="flex items-center gap-2.5">
-            <span className="font-display text-lg font-bold text-cream-50">
+        <div className="mb-6 mt-6 flex items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-2.5">
+            <h3 className="truncate font-display text-lg font-extrabold text-cocoa-900">
               {activeCategoryObj?.name || 'All Menu'}
-            </span>
-            <span className="rounded-full border border-white/[0.08] bg-white/[0.03] px-2.5 py-0.5 text-[11px] font-bold text-cream-500">
+            </h3>
+            <span className="shrink-0 rounded-full bg-cream-200 px-2.5 py-0.5 text-[11px] font-bold text-cocoa-500">
               {filteredItems.length} {filteredItems.length === 1 ? 'item' : 'items'}
             </span>
           </div>
@@ -179,9 +175,9 @@ export default function MenuSection({ onOpenModal, searchInputRef }) {
             <button
               type="button"
               onClick={resetFilters}
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-gold-300 hover:text-gold-200 transition-colors"
+              className="inline-flex shrink-0 items-center gap-1.5 text-xs font-bold text-caramel-600 transition-colors hover:text-caramel-500"
             >
-              <X className="w-3.5 h-3.5" />
+              <X className="h-3.5 w-3.5" />
               Reset filters
             </button>
           )}
@@ -189,21 +185,21 @@ export default function MenuSection({ onOpenModal, searchInputRef }) {
 
         {/* Grid */}
         {filteredItems.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
-            {filteredItems.map((item, i) => (
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 2xl:grid-cols-4">
+            {filteredItems.map((item) => (
               <FoodCard key={item.id} item={item} onOpenModal={onOpenModal} />
             ))}
           </div>
         ) : (
           /* Empty state */
-          <div className="text-center py-20 px-8 max-w-md mx-auto rounded-[1.5rem] border border-white/[0.05] bg-ink-850/50">
-            <div className="mx-auto mb-5 grid w-16 h-16 place-items-center rounded-2xl bg-white/[0.04] border border-white/[0.08]">
-              <Search className="w-6 h-6 text-cream-500" />
+          <div className="mx-auto max-w-md rounded-3xl border border-cream-300 bg-white px-8 py-16 text-center">
+            <div className="mx-auto mb-5 grid h-16 h-16 place-items-center rounded-full bg-cream-200">
+              <Search className="h-6 w-6 text-cocoa-400" />
             </div>
-            <h3 className="font-display text-lg font-bold text-cream-50">
+            <h3 className="font-display text-lg font-extrabold text-cocoa-900">
               Nothing matches that craving
             </h3>
-            <p className="mt-2 text-xs leading-relaxed text-cream-500">
+            <p className="mt-2 text-xs leading-relaxed text-cocoa-500">
               We couldn&rsquo;t find anything for &ldquo;{searchQuery}&rdquo;.
               Try burgers, wings, fries — or reset your filters.
             </p>

@@ -20,10 +20,10 @@ import {
 function SectionHeading({ step, icon, title }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-ember-500/30 bg-ember-500/10 font-display text-[11px] font-bold text-ember-400">
+      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-caramel-100 font-display text-[11px] font-bold text-caramel-600">
         {step}
       </span>
-      <h4 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.18em] text-cream-100">
+      <h4 className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.18em] text-cocoa-900">
         {icon}
         {title}
       </h4>
@@ -33,7 +33,7 @@ function SectionHeading({ step, icon, title }) {
 
 /**
  * Checkout — calm, numbered sections (details → delivery → payment) with a
- * persistent order summary. All validation & order logic unchanged.
+ * persistent chocolate order summary. All validation & order logic unchanged.
  */
 export default function CheckoutModal() {
   const {
@@ -131,31 +131,30 @@ export default function CheckoutModal() {
     }, 1200);
   };
 
-  const inputClass =
-    'w-full rounded-xl border border-white/[0.08] bg-ink-950/60 px-3.5 py-2.5 text-[13px] text-cream-50 placeholder-cream-600 transition-all duration-200 focus:outline-none focus:border-ember-500/70 focus:ring-2 focus:ring-ember-500/20';
+  const inputClass = 'input-light !py-2.5 text-[13px]';
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-ink-950/85 backdrop-blur-md animate-fade-in overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-cocoa-950/55 p-3 backdrop-blur-sm animate-fade-in sm:p-6"
       role="dialog"
       aria-modal="true"
       aria-label="Checkout"
     >
       <div
-        className="relative flex my-4 flex-col w-full max-w-4xl max-h-[92vh] overflow-hidden rounded-[1.75rem] border border-white/[0.09] bg-ink-850 shadow-glow-soft animate-scale-in"
+        className="relative my-4 flex max-h-[94dvh] w-full max-w-4xl flex-col overflow-hidden rounded-4xl border border-cream-300 bg-cream-50 shadow-overlay animate-scale-in sm:max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex shrink-0 items-center justify-between border-b border-white/[0.07] px-5 py-4 sm:px-6">
+        <div className="flex shrink-0 items-center justify-between border-b border-cream-300 bg-white px-5 py-4 sm:px-6">
           <div className="flex items-center gap-3.5">
-            <span className="grid w-10 h-10 place-items-center rounded-xl border border-ember-500/25 bg-ember-500/10 text-ember-400">
-              <Lock className="w-[18px] h-[18px]" />
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-cocoa-900 text-caramel-400">
+              <Lock className="h-[18px] w-[18px]" />
             </span>
             <div>
-              <h2 className="font-display text-lg sm:text-xl font-extrabold tracking-tight text-cream-50">
+              <h2 className="font-display text-lg font-extrabold tracking-tight text-cocoa-900 sm:text-xl">
                 Secure Checkout
               </h2>
-              <p className="text-[11px] text-cream-500">
+              <p className="text-[11px] text-cocoa-500">
                 Complete your order in under a minute
               </p>
             </div>
@@ -164,56 +163,56 @@ export default function CheckoutModal() {
             type="button"
             onClick={() => setIsCheckoutOpen(false)}
             autoFocus
-            className="grid w-9 h-9 place-items-center rounded-xl border border-white/[0.08] bg-white/[0.03] text-cream-400 transition-colors hover:text-cream-50 hover:bg-white/[0.08]"
+            className="btn-icon"
             aria-label="Close checkout"
           >
-            <X className="w-4 h-4" />
+            <X className="h-4 w-4" />
           </button>
         </div>
 
         {/* Body */}
         <form onSubmit={handlePlaceOrder} className="flex-1 overflow-y-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 p-5 sm:p-7">
+          <div className="grid grid-cols-1 gap-8 p-5 sm:p-7 lg:grid-cols-12">
             {/* ===== Left: steps ===== */}
-            <div className="lg:col-span-7 space-y-7">
+            <div className="space-y-7 lg:col-span-7">
               {/* 01 — Order method */}
               <section className="space-y-3">
                 <SectionHeading
                   step="01"
                   title="Order Method"
-                  icon={<Bike className="w-3.5 h-3.5 text-ember-400" />}
+                  icon={<Bike className="h-3.5 w-3.5 text-caramel-500" />}
                 />
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3" role="group" aria-label="Order method">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2" role="group" aria-label="Order method">
                   <button
                     type="button"
                     onClick={() => setOrderType('delivery')}
                     aria-pressed={orderType === 'delivery'}
-                    className={`flex items-center gap-3 rounded-xl border p-3.5 text-left transition-all duration-200 ${
+                    className={`flex items-center gap-3 rounded-2xl border p-3.5 text-left transition-all duration-200 ${
                       orderType === 'delivery'
-                        ? 'border-ember-500/70 bg-ember-500/[0.1]'
-                        : 'border-white/[0.08] bg-ink-950/40 hover:border-white/[0.16]'
+                        ? 'border-caramel-500 bg-caramel-50'
+                        : 'border-cream-300 bg-white hover:border-cocoa-900/30'
                     }`}
                   >
-                    <Bike className={`w-5 h-5 shrink-0 ${orderType === 'delivery' ? 'text-ember-400' : 'text-cream-500'}`} />
+                    <Bike className={`h-5 w-5 shrink-0 ${orderType === 'delivery' ? 'text-caramel-600' : 'text-cocoa-400'}`} />
                     <span>
-                      <span className="block text-xs font-bold text-cream-50">Doorstep Delivery</span>
-                      <span className="block text-[10.5px] text-cream-500">25–35 min ETA</span>
+                      <span className="block text-xs font-bold text-cocoa-900">Doorstep Delivery</span>
+                      <span className="block text-[10.5px] text-cocoa-500">25–35 min ETA</span>
                     </span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setOrderType('pickup')}
                     aria-pressed={orderType === 'pickup'}
-                    className={`flex items-center gap-3 rounded-xl border p-3.5 text-left transition-all duration-200 ${
+                    className={`flex items-center gap-3 rounded-2xl border p-3.5 text-left transition-all duration-200 ${
                       orderType === 'pickup'
-                        ? 'border-ember-500/70 bg-ember-500/[0.1]'
-                        : 'border-white/[0.08] bg-ink-950/40 hover:border-white/[0.16]'
+                        ? 'border-caramel-500 bg-caramel-50'
+                        : 'border-cream-300 bg-white hover:border-cocoa-900/30'
                     }`}
                   >
-                    <Store className={`w-5 h-5 shrink-0 ${orderType === 'pickup' ? 'text-ember-400' : 'text-cream-500'}`} />
+                    <Store className={`h-5 w-5 shrink-0 ${orderType === 'pickup' ? 'text-caramel-600' : 'text-cocoa-400'}`} />
                     <span>
-                      <span className="block text-xs font-bold text-cream-50">Store Pickup</span>
-                      <span className="block text-[10.5px] text-cream-500">Ready in 15 min · Free</span>
+                      <span className="block text-xs font-bold text-cocoa-900">Store Pickup</span>
+                      <span className="block text-[10.5px] text-cocoa-500">Ready in 15 min · Free</span>
                     </span>
                   </button>
                 </div>
@@ -224,9 +223,9 @@ export default function CheckoutModal() {
                 <SectionHeading
                   step="02"
                   title="Your Details"
-                  icon={<User className="w-3.5 h-3.5 text-gold-400" />}
+                  icon={<User className="h-3.5 w-3.5 text-caramel-500" />}
                 />
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <div>
                     <label htmlFor="co-name" className="field-label">Full Name *</label>
                     <input id="co-name" type="text" required value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="e.g. David Adeleke" className={inputClass} />
@@ -247,7 +246,7 @@ export default function CheckoutModal() {
                 <SectionHeading
                   step="03"
                   title={orderType === 'delivery' ? 'Delivery Address' : 'Pickup Location'}
-                  icon={<MapPin className="w-3.5 h-3.5 text-ember-400" />}
+                  icon={<MapPin className="h-3.5 w-3.5 text-caramel-500" />}
                 />
                 {orderType === 'delivery' ? (
                   <>
@@ -255,7 +254,7 @@ export default function CheckoutModal() {
                       <label htmlFor="co-address" className="field-label">Street Address / House No. *</label>
                       <input id="co-address" type="text" required value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Flat 4B, 18 Adeola Odeku St, Victoria Island" className={inputClass} />
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                       <div>
                         <label htmlFor="co-landmark" className="field-label">Nearest Landmark / Gate</label>
                         <input id="co-landmark" type="text" value={landmark} onChange={(e) => setLandmark(e.target.value)} placeholder="Beside Mega Plaza" className={inputClass} />
@@ -267,14 +266,14 @@ export default function CheckoutModal() {
                     </div>
                   </>
                 ) : (
-                  <div className="flex items-start gap-3 rounded-xl border border-white/[0.08] bg-ink-950/40 p-4">
-                    <Store className="mt-0.5 w-5 h-5 shrink-0 text-gold-400" />
+                  <div className="flex items-start gap-3 rounded-2xl border border-cream-300 bg-white p-4">
+                    <Store className="mt-0.5 h-5 w-5 shrink-0 text-caramel-500" />
                     <div className="text-xs leading-relaxed">
-                      <span className="font-bold text-cream-50">Pickup at:</span>{' '}
-                      <span className="text-cream-300">
+                      <span className="font-bold text-cocoa-900">Pickup at:</span>{' '}
+                      <span className="text-cocoa-500">
                         Big Burger Main Kitchen, 14 Victoria Island Boulevard, Lagos.
                       </span>
-                      <p className="mt-1 font-semibold text-gold-300">
+                      <p className="mt-1 font-bold text-caramel-600">
                         Ready hot in ~15 minutes.
                       </p>
                     </div>
@@ -287,22 +286,22 @@ export default function CheckoutModal() {
                 <SectionHeading
                   step="04"
                   title="Payment"
-                  icon={<CreditCard className="w-3.5 h-3.5 text-emerald-400" />}
+                  icon={<CreditCard className="h-3.5 w-3.5 text-caramel-500" />}
                 />
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3" role="group" aria-label="Payment method">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2" role="group" aria-label="Payment method">
                   <button
                     type="button"
                     onClick={() => setPaymentMethod('pod')}
                     aria-pressed={paymentMethod === 'pod'}
-                    className={`rounded-xl border p-4 text-left transition-all duration-200 ${
+                    className={`rounded-2xl border p-4 text-left transition-all duration-200 ${
                       paymentMethod === 'pod'
-                        ? 'border-emerald-400/60 bg-emerald-400/[0.08]'
-                        : 'border-white/[0.08] bg-ink-950/40 hover:border-white/[0.16]'
+                        ? 'border-caramel-500 bg-caramel-50'
+                        : 'border-cream-300 bg-white hover:border-cocoa-900/30'
                     }`}
                   >
-                    <Banknote className={`w-5 h-5 ${paymentMethod === 'pod' ? 'text-emerald-400' : 'text-cream-500'}`} />
-                    <span className="mt-2 block text-xs font-bold text-cream-50">Pay on Delivery</span>
-                    <span className="mt-0.5 block text-[10.5px] leading-snug text-cream-500">
+                    <Banknote className={`h-5 w-5 ${paymentMethod === 'pod' ? 'text-caramel-600' : 'text-cocoa-400'}`} />
+                    <span className="mt-2 block text-xs font-bold text-cocoa-900">Pay on Delivery</span>
+                    <span className="mt-0.5 block text-[10.5px] leading-snug text-cocoa-500">
                       Cash or POS when your rider arrives
                     </span>
                   </button>
@@ -310,22 +309,22 @@ export default function CheckoutModal() {
                     type="button"
                     onClick={() => setPaymentMethod('online')}
                     aria-pressed={paymentMethod === 'online'}
-                    className={`rounded-xl border p-4 text-left transition-all duration-200 ${
+                    className={`rounded-2xl border p-4 text-left transition-all duration-200 ${
                       paymentMethod === 'online'
-                        ? 'border-ember-500/70 bg-ember-500/[0.1]'
-                        : 'border-white/[0.08] bg-ink-950/40 hover:border-white/[0.16]'
+                        ? 'border-caramel-500 bg-caramel-50'
+                        : 'border-cream-300 bg-white hover:border-cocoa-900/30'
                     }`}
                   >
-                    <CreditCard className={`w-5 h-5 ${paymentMethod === 'online' ? 'text-ember-400' : 'text-cream-500'}`} />
-                    <span className="mt-2 block text-xs font-bold text-cream-50">Pay Online</span>
-                    <span className="mt-0.5 block text-[10.5px] leading-snug text-cream-500">
+                    <CreditCard className={`h-5 w-5 ${paymentMethod === 'online' ? 'text-caramel-600' : 'text-cocoa-400'}`} />
+                    <span className="mt-2 block text-xs font-bold text-cocoa-900">Pay Online</span>
+                    <span className="mt-0.5 block text-[10.5px] leading-snug text-cocoa-500">
                       Debit card, Apple Pay or transfer
                     </span>
                   </button>
                 </div>
 
                 {paymentMethod === 'online' && (
-                  <div className="space-y-3 rounded-xl border border-white/[0.08] bg-ink-950/40 p-4 animate-fade-up">
+                  <div className="animate-fade-up space-y-3 rounded-2xl border border-cream-300 bg-white p-4">
                     <div>
                       <label htmlFor="co-card" className="field-label">Card Number</label>
                       <input id="co-card" type="text" maxLength={19} value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} placeholder="4532 •••• •••• 8842" className={inputClass} />
@@ -340,8 +339,8 @@ export default function CheckoutModal() {
                         <input id="co-cvv" type="password" maxLength={4} value={cardCvv} onChange={(e) => setCardCvv(e.target.value)} placeholder="•••" className={inputClass} />
                       </div>
                     </div>
-                    <p className="flex items-center gap-2 text-[10.5px] text-cream-500">
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                    <p className="flex items-center gap-2 text-[10.5px] text-cocoa-500">
+                      <ShieldCheck className="h-3.5 w-3.5 text-success-500" />
                       256-bit SSL encrypted · PCI-DSS certified
                     </p>
                   </div>
@@ -351,12 +350,12 @@ export default function CheckoutModal() {
 
             {/* ===== Right: summary ===== */}
             <div className="lg:col-span-5">
-              <div className="lg:sticky lg:top-6 space-y-4 rounded-2xl border border-white/[0.08] bg-ink-900/70 p-5 sm:p-6">
+              <div className="space-y-4 rounded-3xl bg-cocoa-900 p-5 text-cream-50 shadow-overlay sm:p-6 lg:sticky lg:top-6">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-black uppercase tracking-[0.2em] text-cream-50">
+                  <h3 className="text-xs font-extrabold uppercase tracking-[0.2em] text-cream-50">
                     Order Summary
                   </h3>
-                  <span className="text-[11px] font-bold text-gold-300">
+                  <span className="text-[11px] font-bold text-caramel-400">
                     {cartItems.reduce((s, i) => s + i.quantity, 0)} items
                   </span>
                 </div>
@@ -365,73 +364,73 @@ export default function CheckoutModal() {
                   {cartItems.map((item) => (
                     <div key={item.uniqueId} className="flex items-center justify-between gap-2 text-xs">
                       <div className="flex min-w-0 items-center gap-2">
-                        <span className="grid h-5 min-w-[20px] shrink-0 place-items-center rounded-md bg-ember-500/15 px-1 text-[10px] font-black text-ember-300">
+                        <span className="grid h-5 min-w-[20px] shrink-0 place-items-center rounded-md bg-caramel-500/20 px-1 text-[10px] font-extrabold text-caramel-300">
                           {item.quantity}x
                         </span>
                         <div className="min-w-0">
-                          <span className="block truncate font-semibold text-cream-100">{item.name}</span>
+                          <span className="block truncate font-semibold text-cream-50">{item.name}</span>
                           {item.selectedExtras?.length > 0 && (
-                            <span className="block truncate text-[10px] text-gold-300/80">
+                            <span className="block truncate text-[10px] text-caramel-300/80">
                               +{item.selectedExtras.map((e) => e.name).join(', ')}
                             </span>
                           )}
                         </div>
                       </div>
-                      <span className="shrink-0 font-bold text-cream-100 tabular-nums">
+                      <span className="shrink-0 font-bold text-cream-50 tabular-nums">
                         {formatPrice(item.unitPrice * item.quantity)}
                       </span>
                     </div>
                   ))}
                 </div>
 
-                <div className="space-y-1.5 border-t border-white/[0.08] pt-3.5 text-xs">
-                  <div className="flex justify-between text-cream-400">
+                <div className="space-y-1.5 border-t border-cream-50/10 pt-3.5 text-xs">
+                  <div className="flex justify-between text-cream-50/60">
                     <span>Subtotal</span>
-                    <span className="font-bold text-cream-100 tabular-nums">{formatPrice(subtotal)}</span>
+                    <span className="font-bold text-cream-50 tabular-nums">{formatPrice(subtotal)}</span>
                   </div>
                   {appliedCoupon && (
-                    <div className="flex justify-between font-bold text-emerald-400">
+                    <div className="flex justify-between font-bold text-caramel-300">
                       <span>Discount · {appliedCoupon.code}</span>
                       <span className="tabular-nums">−{formatPrice(discountAmount)}</span>
                     </div>
                   )}
-                  <div className="flex justify-between text-cream-400">
+                  <div className="flex justify-between text-cream-50/60">
                     <span>Delivery</span>
-                    <span className={deliveryFee === 0 ? 'font-black text-[10px] uppercase text-emerald-400' : 'font-bold text-cream-100 tabular-nums'}>
+                    <span className={deliveryFee === 0 ? 'text-[10px] font-extrabold uppercase text-caramel-300' : 'font-bold text-cream-50 tabular-nums'}>
                       {deliveryFee === 0 ? 'FREE' : formatPrice(deliveryFee)}
                     </span>
                   </div>
-                  <div className="flex justify-between text-cream-400">
+                  <div className="flex justify-between text-cream-50/60">
                     <span>Eco packaging</span>
-                    <span className="font-bold text-cream-100 tabular-nums">{formatPrice(packagingFee)}</span>
+                    <span className="font-bold text-cream-50 tabular-nums">{formatPrice(packagingFee)}</span>
                   </div>
-                  <div className="flex items-center justify-between border-t border-white/[0.08] pt-2.5">
+                  <div className="flex items-center justify-between border-t border-cream-50/10 pt-2.5">
                     <span className="font-display text-base font-bold text-cream-50">Grand Total</span>
-                    <span className="font-display text-[1.5rem] font-extrabold tracking-tight text-gold-300 tabular-nums">
+                    <span className="font-display text-[1.5rem] font-extrabold tracking-tight text-caramel-400 tabular-nums">
                       {formatPrice(grandTotal)}
                     </span>
                   </div>
                 </div>
 
-                <p className="flex items-center gap-2 text-[10.5px] text-cream-500">
-                  <CheckCircle2 className="w-3.5 h-3.5 shrink-0 text-emerald-400" />
+                <p className="flex items-center gap-2 text-[10.5px] text-cream-50/55">
+                  <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-caramel-400" />
                   Sizzling-hot guarantee — fresh within 28 minutes.
                 </p>
 
                 <button
                   type="submit"
                   disabled={isSubmitting || cartItems.length === 0}
-                  className="btn-primary w-full !py-4"
+                  className="btn-caramel w-full !py-4"
                 >
                   {isSubmitting ? (
                     <span className="animate-pulse-soft">Preparing your order ticket…</span>
                   ) : (
                     <>
                       Place Order
-                      <span className="rounded-lg bg-ink-950/25 px-2.5 py-1 font-display text-[13px] font-extrabold tabular-nums">
+                      <span className="rounded-lg bg-cocoa-950/15 px-2.5 py-1 font-display text-[13px] font-extrabold tabular-nums">
                         {formatPrice(grandTotal)}
                       </span>
-                      <ArrowRight className="w-4 h-4" strokeWidth={2.6} />
+                      <ArrowRight className="h-4 w-4" strokeWidth={2.6} />
                     </>
                   )}
                 </button>
