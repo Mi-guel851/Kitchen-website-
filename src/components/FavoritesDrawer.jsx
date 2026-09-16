@@ -2,54 +2,70 @@ import React from 'react';
 import { useCart } from '../context/CartContext';
 import { MENU_ITEMS } from '../data/menuData';
 import { formatPrice } from '../utils/format';
-import { X, Heart, Plus, Trash2, ShoppingBag } from 'lucide-react';
+import { useLockBodyScroll, useEscape } from '../hooks/useMotion';
+import { X, Heart, Plus, Trash2 } from 'lucide-react';
 
+/**
+ * Saved favorites — quick order list in a slide-in drawer.
+ */
 export default function FavoritesDrawer({ onOpenModal }) {
   const {
     isFavoritesOpen,
     setIsFavoritesOpen,
     favorites,
     toggleFavorite,
-    addToCart
+    addToCart,
   } = useCart();
+
+  useLockBodyScroll(isFavoritesOpen);
+  useEscape(() => setIsFavoritesOpen(false), isFavoritesOpen);
 
   if (!isFavoritesOpen) return null;
 
   const favoriteProducts = MENU_ITEMS.filter((item) => favorites.includes(item.id));
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden">
+    <div
+      className="fixed inset-0 z-50 overflow-hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Favorites"
+    >
       <div
-        className="fixed inset-0 bg-black/75 backdrop-blur-sm transition-opacity"
+        className="absolute inset-0 bg-ink-950/75 backdrop-blur-sm animate-fade-in"
         onClick={() => setIsFavoritesOpen(false)}
       />
 
-      <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-[#0F121A] border-l border-white/15 shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
+      <div className="absolute inset-y-0 right-0 w-full max-w-md flex animate-slide-in-right">
+        <div className="flex w-full flex-col bg-ink-900 border-l border-white/[0.08] shadow-glow-soft">
           {/* Header */}
-          <div className="p-5 sm:p-6 border-b border-white/10 flex items-center justify-between bg-[#141724]">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-rose-400">
-                <Heart className="w-5 h-5 fill-rose-500" />
-              </div>
+          <div className="flex items-center justify-between border-b border-white/[0.07] px-5 py-4 sm:px-6">
+            <div className="flex items-center gap-3.5">
+              <span className="grid w-10 h-10 place-items-center rounded-xl border border-rose-400/30 bg-rose-500/10 text-rose-400">
+                <Heart className="w-[18px] h-[18px] fill-rose-500" />
+              </span>
               <div>
-                <h3 className="font-extrabold text-white text-lg">My Favorites</h3>
-                <p className="text-xs text-slate-400">
-                  {favoriteProducts.length} saved items
+                <h3 className="font-display text-lg font-bold tracking-tight text-cream-50">
+                  My Favorites
+                </h3>
+                <p className="text-[11px] text-cream-500 font-semibold">
+                  {favoriteProducts.length} saved {favoriteProducts.length === 1 ? 'item' : 'items'}
                 </p>
               </div>
             </div>
-
             <button
+              type="button"
               onClick={() => setIsFavoritesOpen(false)}
-              className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-colors"
+              autoFocus
+              className="grid w-9 h-9 place-items-center rounded-xl border border-white/[0.08] bg-white/[0.03] text-cream-400 transition-colors hover:text-cream-50 hover:bg-white/[0.08]"
+              aria-label="Close favorites"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
           {/* List */}
-          <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-3.5">
+          <div className="flex-1 space-y-3 overflow-y-auto px-5 py-4 sm:px-6">
             {favoriteProducts.length > 0 ? (
               favoriteProducts.map((item) => (
                 <div
@@ -58,61 +74,67 @@ export default function FavoritesDrawer({ onOpenModal }) {
                     setIsFavoritesOpen(false);
                     onOpenModal(item);
                   }}
-                  className="p-3.5 rounded-2xl bg-[#151824] border border-white/10 hover:border-white/20 transition-all flex gap-3.5 cursor-pointer group"
+                  className="group flex cursor-pointer gap-3.5 rounded-2xl border border-white/[0.06] bg-ink-800/70 p-3.5 transition-colors duration-200 hover:border-white/[0.14]"
                 >
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-16 h-16 rounded-xl object-cover shrink-0 border border-white/10 group-hover:scale-105 transition-transform"
+                    loading="lazy"
+                    className="h-16 w-16 shrink-0 rounded-xl border border-white/[0.08] object-cover"
                   />
-                  <div className="flex-1 min-w-0 flex flex-col justify-between">
+                  <div className="flex min-w-0 flex-1 flex-col justify-between gap-2">
                     <div>
-                      <div className="flex items-start justify-between gap-1">
-                        <h4 className="text-sm font-bold text-white group-hover:text-amber-400 transition-colors truncate">
+                      <div className="flex items-start justify-between gap-1.5">
+                        <h4 className="truncate text-[13px] font-bold text-cream-50 transition-colors group-hover:text-gold-200">
                           {item.name}
                         </h4>
                         <button
+                          type="button"
                           onClick={(e) => {
                             e.stopPropagation();
                             toggleFavorite(item.id);
                           }}
-                          className="text-slate-400 hover:text-rose-400 p-1"
-                          title="Remove from favorites"
+                          className="p-1 text-cream-600 transition-colors hover:text-rose-400"
+                          aria-label={`Remove ${item.name} from favorites`}
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       </div>
-                      <p className="text-xs text-slate-400 line-clamp-1 mt-0.5">
+                      <p className="mt-0.5 line-clamp-1 text-[11.5px] text-cream-500">
                         {item.description}
                       </p>
                     </div>
-
-                    <div className="mt-2 flex items-center justify-between">
-                      <span className="text-sm font-black text-amber-400">
+                    <div className="flex items-center justify-between">
+                      <span className="font-display text-sm font-extrabold text-gold-300 tabular-nums">
                         {formatPrice(item.price)}
                       </span>
                       <button
+                        type="button"
                         onClick={(e) => {
                           e.stopPropagation();
                           addToCart(item, 1);
                         }}
-                        className="px-3 py-1 rounded-xl bg-white/10 hover:bg-[#FF5A1F] text-white text-xs font-bold transition-colors flex items-center gap-1"
+                        className="inline-flex items-center gap-1 rounded-full bg-white/[0.06] border border-white/[0.1] px-3.5 py-1.5 text-xs font-bold text-cream-50 transition-all duration-200 hover:bg-ember-500 hover:border-ember-500 active:scale-95"
+                        aria-label={`Add ${item.name} to cart`}
                       >
-                        <Plus className="w-3.5 h-3.5" />
-                        <span>Add</span>
+                        <Plus className="w-3.5 h-3.5" strokeWidth={2.6} />
+                        Add
                       </button>
                     </div>
                   </div>
                 </div>
               ))
             ) : (
-              <div className="py-20 text-center space-y-3">
-                <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mx-auto text-3xl">
+              <div className="space-y-3 py-16 text-center">
+                <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl border border-white/[0.07] bg-white/[0.03] text-3xl">
                   ❤️
                 </div>
-                <h4 className="text-base font-bold text-white">No favorites saved yet</h4>
-                <p className="text-xs text-slate-400 max-w-xs mx-auto">
-                  Click the heart icon on any burger or dish to save it here for quick ordering.
+                <h4 className="font-display text-base font-bold text-cream-50">
+                  No favorites saved yet
+                </h4>
+                <p className="mx-auto max-w-[240px] text-xs leading-relaxed text-cream-500">
+                  Tap the heart on any burger or dish to save it here for
+                  one-tap reordering.
                 </p>
               </div>
             )}

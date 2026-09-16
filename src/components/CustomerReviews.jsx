@@ -1,100 +1,139 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { INITIAL_REVIEWS } from '../data/reviewsData';
-import { Star, Quote, CheckCircle2, MessageSquarePlus, Sparkles } from 'lucide-react';
+import Reveal from './ui/Reveal';
+import { Star, CheckCircle2, MessageSquarePlus } from 'lucide-react';
 
+function Stars({ rating = 5, size = 'w-3.5 h-3.5' }) {
+  return (
+    <div className="flex items-center gap-0.5" aria-label={`${rating} out of 5 stars`}>
+      {[0, 1, 2, 3, 4].map((i) => (
+        <Star
+          key={i}
+          className={`${size} ${
+            i < rating ? 'fill-gold-400 text-gold-400' : 'text-cream-700'
+          }`}
+        />
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Social proof — featured review spans two columns on desktop; the whole
+ * rail becomes a snap horizontal scroll on mobile.
+ */
 export default function CustomerReviews({ onOpenReviewModal }) {
-  const [reviews] = useState(INITIAL_REVIEWS);
+  const reviews = INITIAL_REVIEWS;
 
   return (
-    <section id="reviews" className="py-16 sm:py-24 relative overflow-hidden">
-      {/* Background ambient lighting */}
-      <div className="absolute top-1/2 right-10 w-96 h-96 bg-[#FF5A1F]/10 blur-[130px] rounded-full pointer-events-none -z-10" />
+    <section id="reviews" className="relative py-16 sm:py-24 overflow-hidden">
+      <div
+        className="absolute top-1/4 -right-32 w-96 h-96 bg-gold-500/[0.05] blur-[130px] rounded-full pointer-events-none"
+        aria-hidden="true"
+      />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider mb-3">
-              <Sparkles className="w-3.5 h-3.5" />
-              Real Reviews from Real Foodies
+        <Reveal>
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between mb-10 sm:mb-14">
+            <div>
+              <p className="eyebrow">
+                <span className="w-6 h-px bg-gold-500/60" aria-hidden="true" />
+                Social Proof
+              </p>
+              <h2 className="mt-4 font-display text-3xl sm:text-4xl lg:text-[2.9rem] font-extrabold tracking-[-0.02em] leading-[1.02] text-cream-50">
+                Loved by 25,000+ hungry people
+              </h2>
+              <p className="mt-3 text-sm sm:text-base text-cream-400 max-w-lg">
+                Don&rsquo;t take our word for it — read what the city is saying
+                about the plates.
+              </p>
             </div>
-            <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-              Loved by Over <span className="text-gradient-orange">25,000+ Customers</span>
-            </h2>
-            <p className="text-sm sm:text-base text-slate-400 mt-2 max-w-xl">
-              Don't just take our word for it. Read what passionate burger lovers and foodies are saying about our dishes.
-            </p>
-          </div>
 
-          <button
-            onClick={onOpenReviewModal}
-            className="self-start md:self-auto px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-bold text-xs sm:text-sm backdrop-blur-md transition-all flex items-center gap-2 shadow-lg"
-          >
-            <MessageSquarePlus className="w-4 h-4 text-[#FF5A1F]" />
-            <span>Leave a Review</span>
-          </button>
-        </div>
-
-        {/* Reviews Masonry / Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {reviews.map((rev) => (
-            <div
-              key={rev.id}
-              className="relative rounded-3xl p-6 sm:p-7 bg-[#141724]/80 border border-white/10 hover:border-white/20 backdrop-blur-xl shadow-xl flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1"
-            >
-              <div className="space-y-4">
-                {/* Top: Stars & Quote Icon */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`w-4 h-4 ${
-                          i < rev.rating
-                            ? 'fill-amber-400 text-amber-400'
-                            : 'text-slate-600'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  <Quote className="w-6 h-6 text-white/10 group-hover:text-[#FF5A1F]/30 transition-colors" />
+            <div className="flex items-center gap-5">
+              <div>
+                <div className="flex items-center gap-2.5">
+                  <span className="font-display text-3xl font-extrabold text-cream-50">
+                    4.9
+                  </span>
+                  <Stars rating={5} size="w-4 h-4" />
                 </div>
-
-                {/* Review Text */}
-                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed italic">
-                  "{rev.review}"
+                <p className="mt-1 text-[11px] font-semibold text-cream-600">
+                  2,500+ verified reviews
                 </p>
               </div>
-
-              {/* Bottom Customer Info */}
-              <div className="pt-5 mt-5 border-t border-white/5 flex items-center gap-3">
-                <img
-                  src={rev.avatar}
-                  alt={rev.name}
-                  className="w-11 h-11 rounded-full object-cover ring-2 ring-orange-500/30"
-                />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-1.5">
-                    <h4 className="text-xs sm:text-sm font-bold text-white truncate">
-                      {rev.name}
-                    </h4>
-                    {rev.verified && (
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" title="Verified Customer" />
-                    )}
-                  </div>
-                  <p className="text-[11px] text-[#FF5A1F] font-semibold truncate">
-                    Ordered: {rev.foodOrdered}
-                  </p>
-                  <span className="text-[10px] text-slate-500">
-                    {rev.date}
-                  </span>
-                </div>
-              </div>
+              <button
+                type="button"
+                onClick={onOpenReviewModal}
+                className="btn-ghost !py-3 !px-5 text-xs sm:text-sm"
+              >
+                <MessageSquarePlus className="w-4 h-4 text-ember-400" />
+                Leave a review
+              </button>
             </div>
-          ))}
-        </div>
+          </div>
+        </Reveal>
 
+        {/* Review rail */}
+        <div className="flex gap-5 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4 md:grid md:grid-cols-3 md:overflow-visible md:pb-0">
+          {reviews.map((rev, i) => {
+            const featured = i === 0;
+            return (
+              <Reveal
+                key={rev.id}
+                delay={i * 70}
+                className={`snap-center shrink-0 w-[86%] sm:w-[58%] md:w-auto md:shrink md:snap-none ${
+                  featured ? 'md:col-span-2' : ''
+                } h-full`}
+              >
+                <article className="flex h-full flex-col gap-4 rounded-[1.25rem] bg-ink-800 border border-white/[0.06] p-6 sm:p-7 transition-colors duration-300 hover:border-white/[0.13]">
+                  <div className="flex items-center justify-between">
+                    <Stars rating={rev.rating} />
+                    <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-cream-600">
+                      {rev.date}
+                    </span>
+                  </div>
+
+                  <p
+                    className={`flex-1 leading-relaxed text-cream-300 ${
+                      featured ? 'text-base sm:text-lg' : 'text-sm'
+                    }`}
+                  >
+                    &ldquo;{rev.review}&rdquo;
+                  </p>
+
+                  <div className="flex items-center gap-3 border-t border-white/[0.06] pt-4">
+                    <img
+                      src={rev.avatar}
+                      alt={rev.name}
+                      loading="lazy"
+                      className="w-10 h-10 rounded-full object-cover ring-1 ring-white/[0.12]"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5">
+                        <h4 className="truncate text-[13px] font-bold text-cream-50">
+                          {rev.name}
+                        </h4>
+                        {rev.verified && (
+                          <span
+                            className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-400"
+                            title="Verified customer"
+                          >
+                            <CheckCircle2 className="w-3.5 h-3.5" />
+                            Verified
+                          </span>
+                        )}
+                      </div>
+                      <p className="mt-0.5 truncate text-[11px] font-semibold text-gold-400/80">
+                        Ordered · {rev.foodOrdered}
+                      </p>
+                    </div>
+                  </div>
+                </article>
+              </Reveal>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

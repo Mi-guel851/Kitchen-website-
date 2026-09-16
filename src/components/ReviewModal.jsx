@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
+import { useLockBodyScroll, useEscape } from '../hooks/useMotion';
 import { X, Star, Sparkles, Send } from 'lucide-react';
 
+/**
+ * Leave-a-review modal — star picker + short form, validation unchanged.
+ */
 export default function ReviewModal({ isOpen, onClose }) {
   const { showToast } = useCart();
   const [rating, setRating] = useState(5);
@@ -11,6 +15,9 @@ export default function ReviewModal({ isOpen, onClose }) {
   const [review, setReview] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
+  useLockBodyScroll(isOpen);
+  useEscape(onClose, isOpen);
+
   if (!isOpen) return null;
 
   const handleSubmit = (e) => {
@@ -19,7 +26,6 @@ export default function ReviewModal({ isOpen, onClose }) {
       showToast('Please fill out your name and review', 'error', 'Missing details');
       return;
     }
-
     setSubmitting(true);
     setTimeout(() => {
       setSubmitting(false);
@@ -31,39 +37,47 @@ export default function ReviewModal({ isOpen, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink-950/85 backdrop-blur-md animate-fade-in overflow-y-auto"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Leave a review"
+    >
       <div
-        className="relative w-full max-w-lg rounded-3xl bg-[#141724] border border-white/15 p-6 sm:p-8 shadow-2xl space-y-6"
+        className="relative my-4 w-full max-w-lg space-y-6 rounded-[1.5rem] border border-white/[0.09] bg-ink-850 p-6 shadow-glow-soft animate-scale-in sm:p-8"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
+          <div className="flex items-center gap-3">
+            <span className="grid w-10 h-10 place-items-center rounded-xl border border-gold-500/25 bg-gold-500/10 text-gold-400">
               <Sparkles className="w-5 h-5" />
-            </div>
+            </span>
             <div>
-              <h3 className="text-lg font-bold text-white">Share Your Experience</h3>
-              <p className="text-xs text-slate-400">Tell us how your Big Burger tasted</p>
+              <h3 className="font-display text-lg font-extrabold tracking-tight text-cream-50">
+                Share your experience
+              </h3>
+              <p className="text-[11px] text-cream-500">
+                Tell us how your Big Burger tasted
+              </p>
             </div>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white"
+            autoFocus
+            className="grid w-9 h-9 place-items-center rounded-xl border border-white/[0.08] bg-white/[0.03] text-cream-400 transition-colors hover:text-cream-50 hover:bg-white/[0.08]"
+            aria-label="Close review form"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          
-          {/* Star Rating Select */}
+          {/* Rating */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
-              Your Rating
-            </label>
-            <div className="flex items-center gap-2">
+            <span className="field-label">Your rating</span>
+            <div className="flex items-center gap-1.5" role="radiogroup" aria-label="Star rating">
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
                   type="button"
@@ -71,79 +85,78 @@ export default function ReviewModal({ isOpen, onClose }) {
                   onClick={() => setRating(star)}
                   onMouseEnter={() => setHoverRating(star)}
                   onMouseLeave={() => setHoverRating(0)}
-                  className="p-1 hover:scale-125 transition-transform"
+                  role="radio"
+                  aria-checked={rating === star}
+                  aria-label={`${star} star${star > 1 ? 's' : ''}`}
+                  className="p-1 transition-transform duration-150 hover:scale-125 active:scale-95"
                 >
                   <Star
-                    className={`w-7 h-7 ${
+                    className={`w-7 h-7 transition-colors ${
                       star <= (hoverRating || rating)
-                        ? 'fill-amber-400 text-amber-400'
-                        : 'text-slate-600'
+                        ? 'fill-gold-400 text-gold-400'
+                        : 'text-cream-700'
                     }`}
                   />
                 </button>
               ))}
-              <span className="ml-2 text-xs font-bold text-amber-400">
-                {hoverRating || rating} out of 5 stars
+              <span className="ml-2 text-xs font-bold text-gold-300">
+                {hoverRating || rating}/5
               </span>
             </div>
           </div>
 
           {/* Name */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
-              Your Name
-            </label>
+            <label htmlFor="rev-name" className="field-label">Your name</label>
             <input
+              id="rev-name"
               type="text"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Michael Adeyemi"
-              className="w-full bg-[#1A1E2C] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A1F]"
+              className="w-full rounded-xl border border-white/[0.08] bg-ink-950/60 px-4 py-3 text-sm text-cream-50 placeholder-cream-600 transition-all duration-200 focus:outline-none focus:border-ember-500/70 focus:ring-2 focus:ring-ember-500/20"
             />
           </div>
 
-          {/* Meal Ordered */}
+          {/* Meal */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
-              What did you order?
-            </label>
+            <label htmlFor="rev-meal" className="field-label">What did you order?</label>
             <input
+              id="rev-meal"
               type="text"
               value={meal}
               onChange={(e) => setMeal(e.target.value)}
               placeholder="e.g. Big Classic Burger & Truffle Fries"
-              className="w-full bg-[#1A1E2C] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A1F]"
+              className="w-full rounded-xl border border-white/[0.08] bg-ink-950/60 px-4 py-3 text-sm text-cream-50 placeholder-cream-600 transition-all duration-200 focus:outline-none focus:border-ember-500/70 focus:ring-2 focus:ring-ember-500/20"
             />
           </div>
 
-          {/* Review text */}
+          {/* Review */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
-              Your Review
-            </label>
+            <label htmlFor="rev-text" className="field-label">Your review</label>
             <textarea
+              id="rev-text"
               rows={3}
               required
               value={review}
               onChange={(e) => setReview(e.target.value)}
-              placeholder="Was it juicy, crispy, sizzling hot? Describe your meal..."
-              className="w-full bg-[#1A1E2C] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A1F] resize-none"
+              placeholder="Juicy? Crispy? Sizzling hot? Describe the meal…"
+              className="w-full resize-none rounded-xl border border-white/[0.08] bg-ink-950/60 px-4 py-3 text-sm text-cream-50 placeholder-cream-600 transition-all duration-200 focus:outline-none focus:border-ember-500/70 focus:ring-2 focus:ring-ember-500/20"
             />
           </div>
 
-          {/* Submit CTA */}
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#FF5A1F] to-[#FF7A00] text-white font-bold text-sm shadow-xl shadow-orange-500/25 hover:opacity-95 transition-all flex items-center justify-center gap-2"
+            className="btn-primary w-full"
           >
             {submitting ? (
-              <span>Submitting...</span>
+              <span className="animate-pulse-soft">Submitting…</span>
             ) : (
               <>
                 <Send className="w-4 h-4" />
-                <span>Submit Verified Review</span>
+                Submit verified review
               </>
             )}
           </button>

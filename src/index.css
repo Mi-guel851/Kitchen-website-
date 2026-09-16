@@ -6,91 +6,150 @@
   * {
     box-sizing: border-box;
   }
-  
+
   html {
     color-scheme: dark;
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
-    background-color: #08090C;
-    color: #F8FAFC;
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #0a0807;
+    color: #f1ebe0;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    font-feature-settings: 'cv02', 'cv03';
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: #ff5a1f;
+    color: #0a0807;
+  }
+
+  /* Premium visible focus state for keyboard users */
+  :focus-visible {
+    outline: 2px solid rgba(255, 138, 71, 0.9);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Warm refined scrollbar */
+  ::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0f0c0a;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2f261d;
+    border-radius: 6px;
+    border: 2px solid #0f0c0a;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #ff5a1f;
   }
 }
 
-/* Custom modern scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+@layer components {
+  /* ============ Buttons ============ */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2.5 rounded-full
+      bg-gradient-to-b from-ember-400 via-ember-500 to-ember-600
+      px-7 py-3.5 text-sm font-bold text-ink-950
+      ring-1 ring-inset ring-white/25
+      shadow-glow-ember
+      transition-all duration-300 ease-out
+      hover:shadow-[0_16px_48px_-10px_rgba(255,90,31,0.6)] hover:brightness-110
+      hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]
+      disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2.5 rounded-full
+      border border-white/[0.12] bg-white/[0.04] px-7 py-3.5 text-sm font-bold text-cream-100
+      backdrop-blur-sm transition-all duration-300 ease-out
+      hover:bg-white/[0.09] hover:border-white/25
+      active:scale-[0.98];
+  }
+
+  .btn-dark {
+    @apply inline-flex items-center justify-center gap-2 rounded-full
+      bg-ink-950 px-5 py-3 text-xs font-bold text-cream-100
+      ring-1 ring-inset ring-white/15 transition-all duration-300
+      hover:ring-white/40 hover:bg-black active:scale-[0.97];
+  }
+
+  /* ============ Surfaces ============ */
+  .card-surface {
+    @apply relative rounded-3xl bg-ink-800 border border-white/[0.06];
+  }
+
+  .input-dark {
+    @apply w-full bg-ink-950/70 border border-white/[0.08] rounded-xl
+      px-4 py-3 text-sm text-cream-50 placeholder-cream-600
+      transition-all duration-200
+      focus:outline-none focus:border-ember-500/70 focus:ring-2 focus:ring-ember-500/20;
+  }
+
+  .field-label {
+    @apply block text-[11px] font-bold uppercase tracking-[0.14em] text-cream-500 mb-1.5;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-[11px] sm:text-xs font-black uppercase tracking-[0.26em] text-gold-400;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-ink-950/70 px-3 py-1.5 text-[11px] font-bold text-cream-200 backdrop-blur-md;
+  }
 }
 
-::-webkit-scrollbar-track {
-  background: #0E1015;
+@layer utilities {
+  /* Flame gradient text — used sparingly on key headline words */
+  .text-gradient-flame {
+    background: linear-gradient(100deg, #ff8a47 0%, #ff5a1f 45%, #f2a93b 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Cinematic film grain — layered over dark sections at very low opacity */
+  .grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+  }
+
+  /* Hide scrollbars on horizontal scrollers */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Warm radial spotlight behind food imagery */
+  .spotlight {
+    background: radial-gradient(
+      ellipse 70% 55% at 50% 42%,
+      rgba(255, 90, 31, 0.16) 0%,
+      rgba(255, 138, 71, 0.07) 38%,
+      transparent 72%
+    );
+  }
 }
 
-::-webkit-scrollbar-thumb {
-  background: #262A36;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #FF5A1F;
-}
-
-/* Glassmorphism helpers */
-.glass-panel {
-  background: rgba(21, 24, 33, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.glass-panel-subtle {
-  background: rgba(26, 30, 42, 0.5);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.glass-nav {
-  background: rgba(8, 9, 12, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.glass-card {
-  background: linear-gradient(135deg, rgba(26, 30, 42, 0.7) 0%, rgba(17, 19, 26, 0.85) 100%);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-.glass-card:hover {
-  border-color: rgba(255, 90, 31, 0.35);
-}
-
-/* Glow effects */
-.glow-orange {
-  box-shadow: 0 0 25px rgba(255, 90, 31, 0.35);
-}
-
-.text-gradient-orange {
-  background: linear-gradient(135deg, #FFF 0%, #FFB703 50%, #FF5A1F 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.text-gradient-gold {
-  background: linear-gradient(135deg, #FFFFFF 0%, #F59E0B 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Hide horizontal scrollbar but keep scrolling */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* ============ Reduced motion ============ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
